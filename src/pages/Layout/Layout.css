@@ -1,0 +1,33 @@
+.header {
+    position: absolute;
+    width: 100%;
+    height: 60px;
+    left: 0px;
+    top: 0px;
+
+    background: rgb(62, 19, 27, 0.9);
+    /* opacity: 0.9; */
+    .button {
+        display: flex;
+        justify-content:  space-between;
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
+
+.fon {
+    /* position: relative; */
+    width: 100%; 
+    /* min-height: 500px; */
+    margin-top: 60px;
+    left: 0px;
+    top: 0px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    background: rgb(245,229,231,0.9);
+    border-left: rgb(144, 24, 46, 0.9) solid 30px;
+    border-right: rgb(144, 24, 46, 0.9) solid 30px;
+}

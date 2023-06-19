@@ -54,7 +54,7 @@ const Login = () => {
             return a.text();
           })
           .then(function (res) {
-            if (res !== 'User was not found') {
+            if (res !== 'User was not found' && res !== 'Problems retrieving user') {
               setAccessToken(res);
               navigate('/');
             }

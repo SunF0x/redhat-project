@@ -9,4 +9,5 @@ export function getAccessToken() {
 export function deleteAccessToken() {
   sessionStorage.removeItem('accessToken');
   localStorage.removeItem('accessToken');
+  localStorage.removeItem('goods');
 }

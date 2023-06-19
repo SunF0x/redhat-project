@@ -1,0 +1,50 @@
+.Line {
+    position: absolute;
+    width: 95%;
+    height: 0px;
+    border: 1px solid #000000;
+}
+img {
+    width: 200px;
+    height: 150px;
+    border-radius: 10px;
+}
+.name {
+    font-family: 'El Messiri';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    /* line-height: 56px; */
+
+    color: #000000;
+}
+
+.description {
+    font-family: 'El Messiri';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    /* line-height: 56px; */
+
+    color: #000000;
+}
+
+.discount {
+    font-family: 'El Messiri';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    /* line-height: 56px; */
+
+    color:  rgb(144, 24, 46);
+}
+
+button {
+    background-color: rgb(144, 24, 46);
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    margin: 0 auto;
+    color: white;
+    padding-bottom: 2px;
+}
