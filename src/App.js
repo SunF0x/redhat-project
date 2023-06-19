@@ -1,5 +1,5 @@
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-// import Menu from './pages/Menu';
+import Bag from './pages/Bag/Bag';
 import Layout from './pages/Layout/Layout';
 import Login from './pages/Login/Login';
 import Menu from './pages/Menu/Menu';
@@ -11,10 +11,10 @@ const App = () => {
       <Router>
         <Layout />
         <Routes>
-          <Route path="/" element={<Menu />}>
-            <Route path="/menu" element={<Menu />} />
-            <Route path="/bag" element={<Menu />} />
-          </Route>
+          <Route path="/" element={<Navigate to="/menu" />} />
+          <Route path="/menu" element={<Menu />} />
+          <Route path="/bag" element={<Bag />} />
+          {/* </Route> */}
           <Route path="login" element={<Login />} />
         </Routes>
       </Router>

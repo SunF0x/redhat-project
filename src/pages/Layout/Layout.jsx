@@ -26,7 +26,9 @@ const Layout = () => {
             variant="contained"
             style={{
               width: '150px',
-              backgroundColor: `rgb(62, 19, 27)`
+              backgroundColor: `rgb(62, 19, 27)`,
+              fontFamily: 'El Messiri',
+              fontSize: 16
             }}>
             Меню
           </Button>
@@ -36,15 +38,21 @@ const Layout = () => {
             variant="contained"
             style={{
               width: '150px',
-              backgroundColor: `#3e131b`
+              backgroundColor: `#3e131b`,
+              fontFamily: 'El Messiri',
+              fontSize: 16
             }}>
             Выход
           </Button>
         </div>
         {openmenu && (
           <div className="ml-3 p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
-            <Link to="menu">Меню</Link>
-            <Link to="bag">Корзина</Link>
+            <Link to="menu" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Меню
+            </Link>
+            <Link to="bag" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Корзина
+            </Link>
           </div>
         )}
       </div>

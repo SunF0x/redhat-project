@@ -19,12 +19,12 @@
 .fon {
     /* position: relative; */
     width: 100%; 
-    /* min-height: 500px; */
+    /* height: 100px; */
     margin-top: 60px;
     left: 0px;
     top: 0px;
     background-position: center;
-    background-repeat: no-repeat;
+    /* background-repeat: no-repeat; */
     background-size: cover;
 
     background: rgb(245,229,231,0.9);
