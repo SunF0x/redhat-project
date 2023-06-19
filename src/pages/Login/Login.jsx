@@ -73,20 +73,22 @@ const Login = () => {
           onSubmit={handleSubmit}
           className="p-6 flex flex-col gap-3 justify-center justify-items-center">
           <input
-            className="h-12 rounded-md"
+            className="h-12 rounded-md pl-2"
             id="login"
             type="login"
             label="Логин"
             onChange={handleChange}
             value={values.login}
+            placeholder="Введите логин"
           />
           <input
-            className="h-12 rounded-md"
+            className="h-12 rounded-md pl-2"
             id="password"
             type="password"
             label="Пароль"
             onChange={handleChange}
             value={values.password}
+            placeholder="Введите пароль"
           />
           <div className="flex place-content-center">
             <FormControlLabel
