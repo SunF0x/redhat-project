@@ -19,9 +19,6 @@ const Menu = () => {
       setApp(result);
     };
     asyncFn();
-    if (localStorage.getItem('goods') === null) {
-      localStorage.setItem('goods', []);
-    }
   }, []);
   return (
     <div className="fon">

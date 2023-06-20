@@ -1,9 +1,9 @@
 import './Bag.css';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { SnackbarProvider, enqueueSnackbar } from 'notistack';
 import { getAccessToken, parseJwt } from '../../utils/accessToken';
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
-import { Navigate } from 'react-router-dom';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -16,6 +16,7 @@ const Bag = () => {
   const [goods, setGoods] = useState([]);
   const [menu, setMenu] = useState([]);
   const [address, setAdress] = useState([]);
+  const navigate = useNavigate();
   if (!getAccessToken()) {
     return <Navigate to="/login" />;
   }
@@ -52,7 +53,12 @@ const Bag = () => {
       let menu;
       if (goods !== {}) menu = result.filter((el) => el.menuItemGuid in goods);
       setMenu(menu);
+    };
+    asyncFn();
+  }, [goods]);
 
+  useEffect(() => {
+    const asyncFn2 = async () => {
       const response2 = await fetch('http://localhost:7777/v1/client/address', {
         headers: myHeaders
       }).then(function (a) {
@@ -60,14 +66,17 @@ const Bag = () => {
       });
       setAdress(response2);
     };
-    asyncFn();
+    asyncFn2();
   }, []);
-
-  useEffect(() => {
-    if (goods.length === 0 && localStorage.getItem('goods') !== null) {
-      setGoods(JSON.parse(localStorage.getItem('goods')));
-    }
-  }, []);
+  console.log(localStorage.getItem('goods'));
+  if (
+    goods.length === 0 &&
+    localStorage.getItem('goods') !== null &&
+    localStorage.getItem('goods') !== ''
+  ) {
+    setGoods(JSON.parse(localStorage.getItem('goods')));
+  }
+  //   }, []);
 
   //   if (address.length <= 0) {
   //     const asyncAd = async () => {
@@ -87,13 +96,13 @@ const Bag = () => {
       clientGUID: ''
     },
     onSubmit: async (values) => {
-      setFieldValue('clientGUID', getvalue());
       let order = {
         clientGUID: values.clientGUID,
         payment: values.payment,
         comment: values.comment,
         orderItems: []
       };
+      if (values.clientGUID === '') order.clientGUID = getvalue();
       Object.entries(goods).forEach(([key, value]) =>
         order.orderItems.push({
           menuItemGUID: key,
@@ -106,13 +115,16 @@ const Bag = () => {
         method: 'POST',
         headers: myHeaders,
         body: JSON.stringify(order)
-      })
-        .then(function (a) {
-          return a.json(); // call the json method on the response to get JSON
-        })
-        .then(function (res) {
-          console.log(res);
-        });
+      }).then(function (a) {
+        if (a.status === 201) {
+          localStorage.removeItem('goods');
+          navigate('/my-order');
+        }
+        return a.json(); // call the json method on the response to get JSON
+      });
+      // .then(function (res) {
+      //   console.log(res);
+      // });
     }
   });
 

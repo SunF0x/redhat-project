@@ -5,6 +5,9 @@ import imges from './pirozhki_s_myasom_10_sht.webp';
 const Item = (element) => {
   const el = element?.element;
   const addElementtoBag = (element) => {
+    if (localStorage.getItem('goods') === null) {
+      localStorage.setItem('goods', []);
+    }
     if (localStorage.getItem('goods') !== '') {
       let dict = JSON.parse(localStorage.getItem('goods'));
       let flag = false;

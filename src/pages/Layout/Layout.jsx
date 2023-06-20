@@ -53,6 +53,9 @@ const Layout = () => {
             <Link to="bag" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
               Корзина
             </Link>
+            <Link to="my-order" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Мои заказы
+            </Link>
           </div>
         )}
       </div>
