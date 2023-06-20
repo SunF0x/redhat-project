@@ -58,13 +58,16 @@ const Layout = () => {
             </Link>
           </div>
         )}
-        {openmenu && parseJwt().role === 'Cook' && (
-          <div className="ml-3 p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
-            <Link to="cook-order" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-              Заказы
-            </Link>
-          </div>
-        )}
+        {openmenu &&
+          (parseJwt()?.role === 'Cook' ||
+            parseJwt()?.role === 'Operator' ||
+            parseJwt()?.role === 'Courier') && (
+            <div className="ml-3 p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
+              <Link to="cook-order" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+                Заказы
+              </Link>
+            </div>
+          )}
       </div>
       <div className="fon">
         <div className="pole"></div>

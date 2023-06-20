@@ -9,8 +9,12 @@ const Menu = () => {
   if (!getAccessToken()) {
     return <Navigate to="/login" />;
   }
-  if (parseJwt()?.role === 'Cook' || parseJwt()?.role === 'Operator') {
-    return <Navigate to="/cook-order" />;
+  if (
+    parseJwt()?.role === 'Cook' ||
+    parseJwt()?.role === 'Operator' ||
+    parseJwt()?.role === 'Courier'
+  ) {
+    return <Navigate to="/cook-order" replace={true} />;
   }
   useEffect(() => {
     const asyncFn = async () => {

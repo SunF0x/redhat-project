@@ -17,23 +17,24 @@ const App = () => {
         <Layout />
         <Routes>
           <Route path="/" element={<Menu />} />
-          {/* <Route path="/" element={<CookOrder />} /> */}
           <Route path="/menu" element={<Menu />} />
           <Route path="/bag" element={<Bag />} />
           <Route path="/my-order" element={<Order />} />
-          {parseJwt()?.role === 'Cook' || parseJwt()?.role === 'Operator' ? (
+          <Route path="/my-order/:id" element={<OrderId />} />
+          {parseJwt()?.role === 'Cook' ||
+          parseJwt()?.role === 'Operator' ||
+          parseJwt()?.role === 'Courier' ? (
             <Route path="/cook-order" element={<CookOrder />} />
           ) : (
             ''
           )}
-          {parseJwt()?.role === 'Cook' || parseJwt()?.role === 'Operator' ? (
+          {parseJwt()?.role === 'Cook' ||
+          parseJwt()?.role === 'Operator' ||
+          parseJwt()?.role === 'Courier' ? (
             <Route path="/cook-order/:id" element={<CookOrderId />} />
           ) : (
             ''
           )}
-          {/* <Route index element={<Order />} /> */}
-          <Route path="/my-order/:id" element={<OrderId />} />
-          {/* </Route> */}
           <Route path="login" element={<Login />} />
         </Routes>
       </Router>

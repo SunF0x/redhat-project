@@ -30,7 +30,6 @@ const Order = () => {
     <div className="fon">
       <div className="pole">
         <div className="title2">Мои заказы</div>
-        <div className="Line"></div>
         <Table sx={{ minWidth: 650, padding: 10 }} aria-label="simple table">
           <TableHead sx={{ fontFamily: 'El Messiri', fontSize: 18 }}>
             <TableRow>

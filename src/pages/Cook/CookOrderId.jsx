@@ -1,8 +1,8 @@
 import './CookOrder.css';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { getAccessToken, parseJwt } from '../../utils/accessToken';
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
-import { getAccessToken } from '../../utils/accessToken';
 
 const Order = () => {
   const { id } = useParams();
@@ -22,9 +22,9 @@ const Order = () => {
       setApp(result);
     };
     asyncFn();
-    if (localStorage.getItem('goods') === null) {
-      localStorage.setItem('goods', []);
-    }
+    // if (localStorage.getItem('goods') === null) {
+    //   localStorage.setItem('goods', []);
+    // }
   }, []);
 
   function countsum() {
@@ -37,13 +37,51 @@ const Order = () => {
   }
 
   const handlecookorder = () => {
-    const asyncCansel = async () => {
+    const asyncCookOper = async () => {
       await fetch(`http://127.0.0.1:7777/v1/order/${id}`, {
         method: 'PUT',
         headers: myHeaders
       });
     };
-    asyncCansel();
+    const asyncCourier = async () => {
+      await fetch(`http://127.0.0.1:7777/v1/order/${id}`, {
+        method: 'PUT',
+        headers: myHeaders,
+        body: JSON.stringify({
+          method: 'take'
+        })
+      });
+    };
+    if (parseJwt()?.role !== 'Courier') {
+      asyncCookOper();
+    } else if (app.status === 'WaitingTakeout') {
+      asyncCourier();
+    }
+    const asyncFn = async () => {
+      const response = await fetch(`http://127.0.0.1:7777/v1/order/${id}`, { headers: myHeaders }); //,{mode: 'no-cors'}
+      const result = await response.json();
+      setApp(result);
+    };
+    asyncFn();
+  };
+
+  const handleready = () => {
+    const asyncReady = async () => {
+      await fetch(`http://127.0.0.1:7777/v1/order/${id}`, {
+        method: 'PUT',
+        headers: myHeaders,
+        body: JSON.stringify({
+          method: 'issue'
+        })
+      });
+    };
+    asyncReady();
+    const asyncFn = async () => {
+      const response = await fetch(`http://127.0.0.1:7777/v1/order/${id}`, { headers: myHeaders }); //,{mode: 'no-cors'}
+      const result = await response.json();
+      setApp(result);
+    };
+    asyncFn();
   };
 
   return (
@@ -81,6 +119,21 @@ const Order = () => {
         }}>
         Взять в работу
       </Button>
+      {parseJwt()?.role === 'Courier' && app.status === 'Delivering' && (
+        <Button
+          type="submit"
+          onClick={handleready}
+          variant="contained"
+          style={{
+            width: '200px',
+            backgroundColor: `black`,
+            fontFamily: 'El Messiri',
+            fontSize: 16,
+            margin: '30px'
+          }}>
+          Заказ доставлен
+        </Button>
+      )}
       <div className="button-left">
         <Button
           type="submit"
