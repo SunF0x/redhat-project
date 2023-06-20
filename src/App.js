@@ -8,6 +8,7 @@ import Menu from './pages/Menu/Menu';
 import Order from './pages/Order/Order';
 import OrderId from './pages/Order/OrderId';
 import React from 'react';
+import User from './pages/User/User';
 // import { parseJwt } from './utils/accessToken';
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
         <Layout />
         <Routes>
           <Route path="/" element={<Menu />} />
+          <Route path="/user" element={<User />} />
           <Route path="/menu" element={<Menu />} />
           <Route path="/bag" element={<Bag />} />
           <Route path="/my-order" element={<Order />} />

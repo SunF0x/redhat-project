@@ -32,6 +32,22 @@ const Layout = () => {
             }}>
             Меню
           </Button>
+          {parseJwt().role === 'Client' && (
+            <Button
+              type="submit"
+              variant="contained"
+              style={{
+                width: '200px',
+                backgroundColor: `#3e131b`,
+                fontFamily: 'El Messiri',
+                fontSize: 16,
+                marginLeft: '650px'
+              }}>
+              <Link to="user" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+                Личный кабинет
+              </Link>
+            </Button>
+          )}
           <Button
             onClick={handleLogout}
             type="submit"
@@ -46,7 +62,7 @@ const Layout = () => {
           </Button>
         </div>
         {openmenu && parseJwt().role === 'Client' && (
-          <div className="ml-3 p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
+          <div className="ml-8 p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
             <Link to="menu" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
               Меню
             </Link>
@@ -62,7 +78,7 @@ const Layout = () => {
           (parseJwt()?.role === 'Cook' ||
             parseJwt()?.role === 'Operator' ||
             parseJwt()?.role === 'Courier') && (
-            <div className="ml-3 p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
+            <div className="ml-8 p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
               <Link to="cook-order" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
                 Заказы
               </Link>
