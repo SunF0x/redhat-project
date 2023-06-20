@@ -1,6 +1,5 @@
 import './Menu.css';
 import { SnackbarProvider, enqueueSnackbar } from 'notistack';
-import imges from './pirozhki_s_myasom_10_sht.webp';
 
 const Item = (element) => {
   const el = element?.element;
@@ -30,8 +29,7 @@ const Item = (element) => {
   };
   return (
     <div className="p-4 flex flex-row">
-      {/* <img src={`../../${el.photoUri}`}></img> */}
-      <img src={imges} />
+      <img src={`http://localhost:7777${el.photoUri}`} />
       <div className="flex flex-col pl-4 max-w-4xl">
         <div className="name">{el.name}</div>
         <div className="description">{el.description}</div>

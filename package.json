@@ -68,5 +68,6 @@
     "*.{html,css,less,ejs,json}": [
       "prettier --write --config ./.prettierrc"
     ]
-  }
+  },
+  "homepage": "/~s265028/redhat-sample/"
 }

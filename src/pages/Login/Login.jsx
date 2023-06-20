@@ -64,7 +64,7 @@ const Login = () => {
   });
   return (
     <div className="App">
-      <div className="Footer">
+      <div className="header">
         <div className="Text">Добро пожаловать в кафе КРАСНОЙ ШАПОЧКИ</div>
       </div>
       <div className="Form">
