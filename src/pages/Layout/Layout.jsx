@@ -1,6 +1,6 @@
 import './Layout.css';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
-import { deleteAccessToken, getAccessToken } from '../../utils/accessToken';
+import { deleteAccessToken, getAccessToken, parseJwt } from '../../utils/accessToken';
 import { Button } from '@mui/material';
 import { useState } from 'react';
 
@@ -45,7 +45,7 @@ const Layout = () => {
             Выход
           </Button>
         </div>
-        {openmenu && (
+        {openmenu && parseJwt().role === 'Client' && (
           <div className="ml-3 p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
             <Link to="menu" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
               Меню
@@ -55,6 +55,13 @@ const Layout = () => {
             </Link>
             <Link to="my-order" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
               Мои заказы
+            </Link>
+          </div>
+        )}
+        {openmenu && parseJwt().role === 'Cook' && (
+          <div className="ml-3 p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
+            <Link to="cook-order" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Заказы
             </Link>
           </div>
         )}

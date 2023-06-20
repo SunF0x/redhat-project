@@ -1,13 +1,16 @@
 import './Menu.css';
+import { getAccessToken, parseJwt } from '../../utils/accessToken';
 import { useEffect, useState } from 'react';
 import Item from './Item';
 import { Navigate } from 'react-router-dom';
-import { getAccessToken } from '../../utils/accessToken';
 
 const Menu = () => {
   const [app, setApp] = useState([]);
   if (!getAccessToken()) {
     return <Navigate to="/login" />;
+  }
+  if (parseJwt()?.role === 'Cook') {
+    return <Navigate to="/cook-order" />;
   }
   useEffect(() => {
     const asyncFn = async () => {

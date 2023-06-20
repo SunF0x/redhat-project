@@ -1,4 +1,4 @@
-import './Order.css';
+import './CookOrder.css';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
@@ -36,24 +36,20 @@ const Order = () => {
     return sum;
   }
 
-  const handledeleteorder = () => {
-    const asyncCansel = () => {
-      fetch(`http://127.0.0.1:7777/v1/order/${id}`, {
+  const handlecookorder = () => {
+    const asyncCansel = async () => {
+      await fetch(`http://127.0.0.1:7777/v1/order/${id}`, {
         method: 'PUT',
-        headers: myHeaders,
-        body: JSON.stringify({
-          method: 'cancel'
-        })
+        headers: myHeaders
       });
     };
     asyncCansel();
-    navigate('/my-order');
   };
 
   return (
     <div className="fon">
       <div className="pole">
-        <div className="title2">Мои заказы - Заказ</div>
+        <div className="title2">Заказ</div>
         <div className="text2">
           Дата: {app?.created?.substring(0, 10)} {app?.created?.substring(11, 19)}
         </div>
@@ -74,7 +70,7 @@ const Order = () => {
       </div>
       <Button
         type="submit"
-        onClick={handledeleteorder}
+        onClick={handlecookorder}
         variant="contained"
         style={{
           width: '200px',
@@ -83,12 +79,12 @@ const Order = () => {
           fontSize: 16,
           margin: '30px'
         }}>
-        Отменить заказ
+        Взять в работу
       </Button>
       <div className="button-left">
         <Button
           type="submit"
-          onClick={() => navigate('/my-order')}
+          onClick={() => navigate('/cook-order')}
           variant="contained"
           style={{
             width: '150px',
