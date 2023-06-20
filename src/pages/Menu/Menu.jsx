@@ -9,7 +9,7 @@ const Menu = () => {
   if (!getAccessToken()) {
     return <Navigate to="/login" />;
   }
-  if (parseJwt()?.role === 'Cook') {
+  if (parseJwt()?.role === 'Cook' || parseJwt()?.role === 'Operator') {
     return <Navigate to="/cook-order" />;
   }
   useEffect(() => {
