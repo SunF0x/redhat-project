@@ -21,7 +21,6 @@ const Order = () => {
       myHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
       const response = await fetch('http://127.0.0.1:7777/v1/order', { headers: myHeaders }); //,{mode: 'no-cors'}
       const result = await response.json();
-      // console.log(result);
       setApp(result);
     };
     asyncFn();
@@ -53,10 +52,12 @@ const Order = () => {
               </TableCell>
             </TableRow>
           </TableHead>
-          <div className="Line"></div>
+          {/* <div className="Line"></div> */}
           <TableBody>
             {app.map((row, index) => (
-              <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <TableRow
+                key={row.orderGuid}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell
                   className="goods"
                   component="th"
@@ -84,9 +85,9 @@ const Order = () => {
                 </TableCell>
               </TableRow>
             ))}
-            <div className="Line"></div>
           </TableBody>
         </Table>
+        <div className="Line"></div>
         <div className="h-96"></div>
       </div>
     </div>

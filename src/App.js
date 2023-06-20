@@ -1,4 +1,4 @@
-import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'; //Navigate,
 import Bag from './pages/Bag/Bag';
 import CookOrder from './pages/Cook/CookOrder';
 import CookOrderId from './pages/Cook/CookOrderId';
@@ -8,7 +8,7 @@ import Menu from './pages/Menu/Menu';
 import Order from './pages/Order/Order';
 import OrderId from './pages/Order/OrderId';
 import React from 'react';
-import { parseJwt } from './utils/accessToken';
+// import { parseJwt } from './utils/accessToken';
 
 const App = () => {
   return (
@@ -21,20 +21,8 @@ const App = () => {
           <Route path="/bag" element={<Bag />} />
           <Route path="/my-order" element={<Order />} />
           <Route path="/my-order/:id" element={<OrderId />} />
-          {parseJwt()?.role === 'Cook' ||
-          parseJwt()?.role === 'Operator' ||
-          parseJwt()?.role === 'Courier' ? (
-            <Route path="/cook-order" element={<CookOrder />} />
-          ) : (
-            ''
-          )}
-          {parseJwt()?.role === 'Cook' ||
-          parseJwt()?.role === 'Operator' ||
-          parseJwt()?.role === 'Courier' ? (
-            <Route path="/cook-order/:id" element={<CookOrderId />} />
-          ) : (
-            ''
-          )}
+          <Route path="/cook-order" element={<CookOrder />} />
+          <Route path="/cook-order/:id" element={<CookOrderId />} />
           <Route path="login" element={<Login />} />
         </Routes>
       </Router>

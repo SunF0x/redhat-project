@@ -50,6 +50,21 @@ const Order = () => {
     navigate('/my-order');
   };
 
+  const addreport = () => {
+    const asyncReport = () => {
+      fetch(`http://127.0.0.1:7777/v1/order/${id}`, {
+        method: 'PUT',
+        headers: myHeaders,
+        body: JSON.stringify({
+          method: 'report',
+          data: document.getElementById('report').value
+        })
+      });
+    };
+    asyncReport();
+    navigate('/my-order');
+  };
+
   return (
     <div className="fon">
       <div className="pole">
@@ -72,19 +87,45 @@ const Order = () => {
         <div className="text2">Комментарий: {app.comment}</div>
         <div className="text2">Статус: {app.status}</div>
       </div>
-      <Button
-        type="submit"
-        onClick={handledeleteorder}
-        variant="contained"
-        style={{
-          width: '200px',
-          backgroundColor: `#3e131b`,
-          fontFamily: 'El Messiri',
-          fontSize: 16,
-          margin: '30px'
-        }}>
-        Отменить заказ
-      </Button>
+      {app.status === 'Created' && (
+        <Button
+          type="submit"
+          onClick={handledeleteorder}
+          variant="contained"
+          style={{
+            width: '200px',
+            backgroundColor: `#3e131b`,
+            fontFamily: 'El Messiri',
+            fontSize: 16,
+            margin: '30px'
+          }}>
+          Отменить заказ
+        </Button>
+      )}
+      {app.status === 'Done' && (
+        <form onSubmit={addreport} className="flex flex-row gap-4 ml-8 mt-4">
+          <input
+            className="h-10 rounded-md pl-2"
+            id="report"
+            type="report"
+            label="report"
+            placeholder="Оставьте отзыв"
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            style={{
+              bottom: 0,
+              right: 0,
+              width: '150px',
+              backgroundColor: `#90182E`,
+              fontFamily: 'El Messiri',
+              fontSize: 16
+            }}>
+            Отправить
+          </Button>
+        </form>
+      )}
       <div className="button-left">
         <Button
           type="submit"

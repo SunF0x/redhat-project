@@ -1,7 +1,6 @@
 import './Bag.css';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { SnackbarProvider, enqueueSnackbar } from 'notistack';
-import { getAccessToken, parseJwt } from '../../utils/accessToken';
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
 import Table from '@mui/material/Table';
@@ -10,6 +9,7 @@ import TableCell from '@mui/material/TableCell';
 // import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { getAccessToken } from '../../utils/accessToken';
 import { useFormik } from 'formik';
 
 const Bag = () => {
@@ -68,7 +68,7 @@ const Bag = () => {
     };
     asyncFn2();
   }, []);
-  console.log(localStorage.getItem('goods'));
+
   if (
     goods.length === 0 &&
     localStorage.getItem('goods') !== null &&
@@ -194,7 +194,7 @@ const Bag = () => {
                   </TableCell>
                 </TableRow>
               ))}
-              <div className="Line"></div>
+              {/* <div className="Line"></div> */}
               {countsum() > 0 ? (
                 <TableRow>
                   {' '}
@@ -212,9 +212,15 @@ const Bag = () => {
                   <TableCell></TableCell>
                 </TableRow>
               ) : (
-                <div className="title">У вас нет выбранных позиций</div>
+                <TableRow>
+                  <TableCell
+                    align="center"
+                    sx={{ fontFamily: 'El Messiri', fontSize: 18, fontWeight: 700 }}>
+                    У вас нет выбранных позиций
+                  </TableCell>
+                </TableRow>
               )}
-              <div className="Line"></div>
+              {/* <div className="Line"></div> */}
             </TableBody>
           </Table>
           <div className="maintext">Оформление заказа</div>
@@ -256,7 +262,11 @@ const Bag = () => {
                   className="h-12 w-96 rounded-md pl-2"
                   onChange={() => setFieldValue('clientGUID', getvalue())}>
                   {address.length !== 0 &&
-                    address?.map((el) => <option value={el.clientGuid}>{el.address}</option>)}
+                    address?.map((el) => (
+                      <option key={el.clientGuid} value={el.clientGuid}>
+                        {el.address}
+                      </option>
+                    ))}
                 </select>
               </div>
               <div className="flex flex-col mx-4">

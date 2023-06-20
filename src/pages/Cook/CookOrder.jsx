@@ -1,5 +1,6 @@
 import './CookOrder.css';
 import { Link, Navigate } from 'react-router-dom';
+import { getAccessToken, parseJwt } from '../../utils/accessToken';
 import { useEffect, useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -7,12 +8,14 @@ import TableCell from '@mui/material/TableCell';
 // import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { getAccessToken } from '../../utils/accessToken';
 
 const CookOrder = () => {
   const [app, setApp] = useState([]);
   if (!getAccessToken()) {
     return <Navigate to="/login" />;
+  }
+  if (parseJwt()?.role === 'Client') {
+    return <Navigate to="/menu" />;
   }
   useEffect(() => {
     const asyncFn = async () => {
@@ -54,10 +57,12 @@ const CookOrder = () => {
               </TableCell>
             </TableRow>
           </TableHead>
-          <div className="Line"></div>
+          {/* <div className="Line"></div> */}
           <TableBody>
             {app.map((row, index) => (
-              <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <TableRow
+                key={row.orderGuid}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell
                   className="goods"
                   component="th"
@@ -85,9 +90,9 @@ const CookOrder = () => {
                 </TableCell>
               </TableRow>
             ))}
-            <div className="Line"></div>
           </TableBody>
         </Table>
+        <div className="Line"></div>
         <div className="h-96"></div>
       </div>
     </div>
