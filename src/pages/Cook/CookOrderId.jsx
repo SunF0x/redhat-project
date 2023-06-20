@@ -7,6 +7,7 @@ import { Button } from '@mui/material';
 const Order = () => {
   const { id } = useParams();
   const [app, setApp] = useState([]);
+  const [change, setChange] = useState(false);
   const navigate = useNavigate();
   if (!getAccessToken()) {
     return <Navigate to="/login" />;
@@ -25,7 +26,7 @@ const Order = () => {
     // if (localStorage.getItem('goods') === null) {
     //   localStorage.setItem('goods', []);
     // }
-  }, []);
+  }, [change]);
 
   function countsum() {
     let sum = 0;
@@ -41,7 +42,7 @@ const Order = () => {
       await fetch(`http://127.0.0.1:7777/v1/order/${id}`, {
         method: 'PUT',
         headers: myHeaders
-      });
+      }).then(() => setChange(!change));
     };
     const asyncCourier = async () => {
       await fetch(`http://127.0.0.1:7777/v1/order/${id}`, {
@@ -50,19 +51,13 @@ const Order = () => {
         body: JSON.stringify({
           method: 'take'
         })
-      });
+      }).then(() => setChange(!change));
     };
     if (parseJwt()?.role !== 'Courier') {
       asyncCookOper();
     } else if (app.status === 'WaitingTakeout') {
       asyncCourier();
     }
-    const asyncFn = async () => {
-      const response = await fetch(`http://127.0.0.1:7777/v1/order/${id}`, { headers: myHeaders }); //,{mode: 'no-cors'}
-      const result = await response.json();
-      setApp(result);
-    };
-    asyncFn();
   };
 
   const handleready = () => {
@@ -73,15 +68,9 @@ const Order = () => {
         body: JSON.stringify({
           method: 'issue'
         })
-      });
+      }).then(() => setChange(!change));
     };
     asyncReady();
-    const asyncFn = async () => {
-      const response = await fetch(`http://127.0.0.1:7777/v1/order/${id}`, { headers: myHeaders }); //,{mode: 'no-cors'}
-      const result = await response.json();
-      setApp(result);
-    };
-    asyncFn();
   };
 
   return (
