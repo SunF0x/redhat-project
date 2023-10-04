@@ -1,4 +1,4 @@
-import './CookOrder.css';
+import './ProcessOrder.css';
 import { Link, Navigate } from 'react-router-dom';
 import { getAccessToken, parseJwt } from '../../utils/accessToken';
 import { useEffect, useState } from 'react';
@@ -9,7 +9,7 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-const CookOrder = () => {
+const ProcessOrder = () => {
   const [app, setApp] = useState([]);
   if (!getAccessToken()) {
     return <Navigate to="/login" />;
@@ -59,37 +59,39 @@ const CookOrder = () => {
           </TableHead>
           {/* <div className="Line"></div> */}
           <TableBody>
-            {app.map((row, index) => (
-              <TableRow
-                key={row.orderGuid}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell
-                  className="goods"
-                  component="th"
-                  scope="row"
-                  sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                  <Link to={row.orderGuid}>Заказ №{index + 1}</Link>
-                </TableCell>
-                <TableCell
-                  className="goods"
-                  align="center"
-                  sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                  {row.created.substring(0, 10)} {row.created.substring(11, 19)}
-                </TableCell>
-                <TableCell
-                  className="goods"
-                  align="center"
-                  sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                  {row.address}
-                </TableCell>
-                <TableCell
-                  className="goods"
-                  align="center"
-                  sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                  {row.status}
-                </TableCell>
-              </TableRow>
-            ))}
+            {app
+              .sort((a, b) => (a.created > b.created ? 1 : -1))
+              .map((row, index) => (
+                <TableRow
+                  key={row.orderGuid}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell
+                    className="goods"
+                    component="th"
+                    scope="row"
+                    sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+                    <Link to={row.orderGuid}>Заказ №{index + 1}</Link>
+                  </TableCell>
+                  <TableCell
+                    className="goods"
+                    align="center"
+                    sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+                    {row.created.substring(0, 10)} {row.created.substring(11, 19)}
+                  </TableCell>
+                  <TableCell
+                    className="goods"
+                    align="center"
+                    sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+                    {row.address}
+                  </TableCell>
+                  <TableCell
+                    className="goods"
+                    align="center"
+                    sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+                    {row.status}
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
         <div className="Line"></div>
@@ -98,4 +100,4 @@ const CookOrder = () => {
     </div>
   );
 };
-export default CookOrder;
+export default ProcessOrder;
