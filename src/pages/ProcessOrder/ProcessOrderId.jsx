@@ -1,4 +1,4 @@
-import './CookOrder.css';
+import './ProcessOrder.css';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { getAccessToken, parseJwt } from '../../utils/accessToken';
 import { useEffect, useState } from 'react';
@@ -95,19 +95,57 @@ const Order = () => {
         <div className="text2">Комментарий: {app.comment}</div>
         <div className="text2">Статус: {app.status}</div>
       </div>
-      <Button
-        type="submit"
-        onClick={handlecookorder}
-        variant="contained"
-        style={{
-          width: '200px',
-          backgroundColor: `#3e131b`,
-          fontFamily: 'El Messiri',
-          fontSize: 16,
-          margin: '30px'
-        }}>
-        Взять в работу
-      </Button>
+      {parseJwt()?.role === 'Cook' && (
+        <Button
+          disabled={app.status === 'Cooking'}
+          type="submit"
+          onClick={handlecookorder}
+          variant="contained"
+          style={{
+            width: '200px',
+            backgroundColor: `#3e131b`,
+            fontFamily: 'El Messiri',
+            fontSize: 16,
+            margin: '30px',
+            color: 'white'
+          }}>
+          Взять в работу
+        </Button>
+      )}
+      {parseJwt()?.role === 'Operator' && (
+        <Button
+          disabled={app.status === 'WaitingTakeout'}
+          type="submit"
+          onClick={handlecookorder}
+          variant="contained"
+          style={{
+            width: '200px',
+            backgroundColor: `#3e131b`,
+            fontFamily: 'El Messiri',
+            fontSize: 16,
+            margin: '30px',
+            color: 'white'
+          }}>
+          Взять на выдачу
+        </Button>
+      )}
+      {parseJwt()?.role === 'Courier' && (
+        <Button
+          disabled={app.status === 'Delivering'}
+          type="submit"
+          onClick={handlecookorder}
+          variant="contained"
+          style={{
+            width: '200px',
+            backgroundColor: `#3e131b`,
+            fontFamily: 'El Messiri',
+            fontSize: 16,
+            margin: '30px',
+            color: 'white'
+          }}>
+          Взять в доставку
+        </Button>
+      )}
       {parseJwt()?.role === 'Courier' && app.status === 'Delivering' && (
         <Button
           type="submit"
@@ -126,7 +164,7 @@ const Order = () => {
       <div className="button-left">
         <Button
           type="submit"
-          onClick={() => navigate('/cook-order')}
+          onClick={() => navigate('/process-order')}
           variant="contained"
           style={{
             width: '150px',

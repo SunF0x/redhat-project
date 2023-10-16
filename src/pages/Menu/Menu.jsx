@@ -14,7 +14,7 @@ const Menu = () => {
     parseJwt()?.role === 'Operator' ||
     parseJwt()?.role === 'Courier'
   ) {
-    return <Navigate to="/cook-order" replace={true} />;
+    return <Navigate to="/process-order" replace={true} />;
   }
   useEffect(() => {
     const asyncFn = async () => {
