@@ -31,7 +31,7 @@ const ProcessOrder = () => {
   }, []);
   return (
     <div className="fon">
-      <div className="pole">
+      <div className="pole1">
         <div className="title2">Заказы</div>
         <div className="Line"></div>
         <Table sx={{ minWidth: 650, padding: 10 }} aria-label="simple table">
@@ -70,7 +70,9 @@ const ProcessOrder = () => {
                     component="th"
                     scope="row"
                     sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                    <Link to={row.orderGuid}>Заказ №{index + 1}</Link>
+                    <Link style={{ textDecoration: 'underline' }} to={row.orderGuid}>
+                      Заказ №{index + 1}
+                    </Link>
                   </TableCell>
                   <TableCell
                     className="goods"
@@ -95,7 +97,7 @@ const ProcessOrder = () => {
           </TableBody>
         </Table>
         <div className="Line"></div>
-        <div className="h-96"></div>
+        {/* <div className="h-96"></div> */}
       </div>
     </div>
   );

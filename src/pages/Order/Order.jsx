@@ -27,7 +27,7 @@ const Order = () => {
   }, []);
   return (
     <div className="fon">
-      <div className="pole">
+      <div className="pole1">
         <div className="title2">Мои заказы</div>
         <Table sx={{ minWidth: 650, padding: 10 }} aria-label="simple table">
           <TableHead sx={{ fontFamily: 'El Messiri', fontSize: 18 }}>
@@ -52,43 +52,45 @@ const Order = () => {
               </TableCell>
             </TableRow>
           </TableHead>
-          {/* <div className="Line"></div> */}
           <TableBody>
-            {app.map((row, index) => (
-              <TableRow
-                key={row.orderGuid}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell
-                  className="goods"
-                  component="th"
-                  scope="row"
-                  sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                  <Link to={row.orderGuid}>Заказ №{index + 1}</Link>
-                </TableCell>
-                <TableCell
-                  className="goods"
-                  align="center"
-                  sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                  {row.created.substring(0, 10)} {row.created.substring(11, 19)}
-                </TableCell>
-                <TableCell
-                  className="goods"
-                  align="center"
-                  sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                  {row.address}
-                </TableCell>
-                <TableCell
-                  className="goods"
-                  align="center"
-                  sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                  {row.status}
-                </TableCell>
-              </TableRow>
-            ))}
+            {app
+              .sort((a, b) => (a.created > b.created ? 1 : -1))
+              .map((row, index) => (
+                <TableRow
+                  key={row.orderGuid}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell
+                    className="goods"
+                    component="th"
+                    scope="row"
+                    sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+                    <Link style={{ textDecoration: 'underline' }} to={row.orderGuid}>
+                      Заказ №{index + 1}
+                    </Link>
+                  </TableCell>
+                  <TableCell
+                    className="goods"
+                    align="center"
+                    sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+                    {row.created.substring(0, 10)} {row.created.substring(11, 19)}
+                  </TableCell>
+                  <TableCell
+                    className="goods"
+                    align="center"
+                    sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+                    {row.address}
+                  </TableCell>
+                  <TableCell
+                    className="goods"
+                    align="center"
+                    sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+                    {row.status}
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
         <div className="Line"></div>
-        <div className="h-96"></div>
       </div>
     </div>
   );
