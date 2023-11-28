@@ -32,7 +32,7 @@ const Layout = () => {
             }}>
             Меню
           </Button>
-          {parseJwt().role === 'Client' && (
+          {parseJwt()?.role === 'Client' && (
             <Button
               type="submit"
               variant="contained"
@@ -84,6 +84,19 @@ const Layout = () => {
               </Link>
             </div>
           )}
+        {openmenu && parseJwt()?.role === 'Admin' && (
+          <div className="ml-8 p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
+            <Link to="menu" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Меню
+            </Link>
+            <Link to="process-order" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Заказы
+            </Link>
+            <Link to="menu" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Отчеты
+            </Link>
+          </div>
+        )}
       </div>
       <div className="fon">
         <div className="pole"></div>

@@ -161,6 +161,23 @@ const Order = () => {
           Заказ доставлен
         </Button>
       )}
+      {parseJwt()?.role === 'Admin' && (
+        <Button
+          disabled={app.status === 'Canceled'}
+          type="submit"
+          onClick={handlecookorder}
+          variant="contained"
+          style={{
+            width: '200px',
+            backgroundColor: `#3e131b`,
+            fontFamily: 'El Messiri',
+            fontSize: 16,
+            margin: '30px',
+            color: 'white'
+          }}>
+          Отменить заказ
+        </Button>
+      )}
       <div className="button-left">
         <Button
           type="submit"

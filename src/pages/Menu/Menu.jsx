@@ -12,9 +12,12 @@ const Menu = () => {
   if (
     parseJwt()?.role === 'Cook' ||
     parseJwt()?.role === 'Operator' ||
-    parseJwt()?.role === 'Courier'
+    parseJwt()?.role === 'Courier' ||
+    parseJwt()?.role === 'Admin'
   ) {
     return <Navigate to="/process-order" replace={true} />;
+  } else if (parseJwt()?.role === null) {
+    return <Navigate to="/login" />;
   }
   useEffect(() => {
     const asyncFn = async () => {
