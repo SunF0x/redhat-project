@@ -51,12 +51,22 @@ const Login = () => {
           body: JSON.stringify(auth)
         })
           .then(function (a) {
+            if (a.status === 404) {
+              alert('User was not found');
+            }
             return a.text();
           })
           .then(function (res) {
-            if (res !== 'User was not found' && res !== 'Problems retrieving user') {
+            if (
+              res !== null &&
+              res !== 'User was not found' &&
+              res !== 'Problems retrieving user' &&
+              res !== 'The specified password does not match the user'
+            ) {
               setAccessToken(res);
               navigate('/');
+            } else {
+              alert('User was not found');
             }
           });
       }
