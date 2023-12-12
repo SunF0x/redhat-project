@@ -87,6 +87,7 @@ const Order = () => {
         <div className="text2">Сумма: {countsum()}</div>
         <div className="text2">Комментарий: {app.comment}</div>
         <div className="text2">Статус: {app.status}</div>
+        <div className="text3">Код получения заказа: {app.deliveryCode}</div>
       </div>
       {app.status === 'Created' && (
         <Button

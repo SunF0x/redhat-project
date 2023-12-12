@@ -9,6 +9,7 @@ const Order = () => {
   const { id } = useParams();
   const [app, setApp] = useState([]);
   const [change, setChange] = useState(false);
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   if (!getAccessToken()) {
     return <Navigate to="/login" />;
@@ -72,6 +73,21 @@ const Order = () => {
       }).then(() => setChange(!change));
     };
     asyncReady();
+  };
+
+  const verifycourier = () => {
+    // const asyncReport = () => {
+    //   fetch(`${REACT_APP_API}/order/${id}`, {
+    //     method: 'PUT',
+    //     headers: myHeaders,
+    //     body: JSON.stringify({
+    //       method: 'report',
+    //       data: document.getElementById('report').value
+    //     })
+    //   });
+    // };
+    // asyncReport();
+    // navigate('/my-order');
   };
 
   return (
@@ -140,6 +156,46 @@ const Order = () => {
           Взять на выдачу
         </Button>
       )}
+      {parseJwt()?.role === 'Operator' && app.status === 'WaitingTakeout' && (
+        <Button
+          type="submit"
+          onClick={() => setOpen(!open)}
+          variant="contained"
+          style={{
+            width: '200px',
+            backgroundColor: `#3e131b`,
+            fontFamily: 'El Messiri',
+            fontSize: 16,
+            margin: '30px',
+            color: 'white'
+          }}>
+          Выдать заказ
+        </Button>
+      )}
+      {open && (
+        <form onSubmit={verifycourier} className="flex flex-row gap-4 ml-8 mt-4">
+          <input
+            className="h-10 rounded-md pl-2"
+            id="report"
+            type="report"
+            label="report"
+            placeholder="Введите код курьера"
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            style={{
+              bottom: 0,
+              right: 0,
+              width: '150px',
+              backgroundColor: `#90182E`,
+              fontFamily: 'El Messiri',
+              fontSize: 16
+            }}>
+            Проверить
+          </Button>
+        </form>
+      )}
       {parseJwt()?.role === 'Courier' && (
         <Button
           disabled={app.status === 'Delivering'}
@@ -158,19 +214,43 @@ const Order = () => {
         </Button>
       )}
       {parseJwt()?.role === 'Courier' && app.status === 'Delivering' && (
-        <Button
-          type="submit"
-          onClick={handleready}
-          variant="contained"
-          style={{
-            width: '200px',
-            backgroundColor: `black`,
-            fontFamily: 'El Messiri',
-            fontSize: 16,
-            margin: '30px'
-          }}>
-          Заказ доставлен
-        </Button>
+        <div className="flex flex-row gap-4">
+          <form onSubmit={verifycourier} className="flex flex-row gap-4 ml-8 mt-4">
+            <input
+              className="h-10 rounded-md pl-2"
+              id="report"
+              type="report"
+              label="report"
+              placeholder="Введите код клиента"
+            />
+            <Button
+              type="submit"
+              variant="contained"
+              style={{
+                bottom: 0,
+                right: 0,
+                width: '150px',
+                backgroundColor: `#90182E`,
+                fontFamily: 'El Messiri',
+                fontSize: 16
+              }}>
+              Проверить
+            </Button>
+          </form>
+          <Button
+            type="submit"
+            onClick={handleready}
+            variant="contained"
+            style={{
+              width: '200px',
+              backgroundColor: `black`,
+              fontFamily: 'El Messiri',
+              fontSize: 16,
+              margin: '16px'
+            }}>
+            Заказ доставлен
+          </Button>
+        </div>
       )}
       {parseJwt()?.role === 'Admin' && (
         <Button
