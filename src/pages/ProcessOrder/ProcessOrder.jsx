@@ -71,7 +71,7 @@ const ProcessOrder = () => {
                     component="th"
                     scope="row"
                     sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                    <Link style={{ textDecoration: 'underline' }} to={row.orderId}>
+                    <Link style={{ textDecoration: 'underline' }} to={`${row.orderId}`}>
                       Заказ №{index + 1}
                     </Link>
                   </TableCell>

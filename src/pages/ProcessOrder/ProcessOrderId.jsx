@@ -95,6 +95,16 @@ const Order = () => {
         <div className="text2">Сумма: {countsum()}</div>
         <div className="text2">Комментарий: {app.comment}</div>
         <div className="text2">Статус: {app.status}</div>
+        <div className="text2">
+          Заказ обрабатывает:
+          {app.status === 'Cooking'
+            ? ' Повар'
+            : app.status === 'WaitingTakeout'
+            ? ' Оператор'
+            : app.status === 'Delivering'
+            ? ' Курьер'
+            : ' -'}
+        </div>
       </div>
       {parseJwt()?.role === 'Cook' && (
         <Button
