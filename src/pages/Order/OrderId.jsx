@@ -2,6 +2,7 @@ import './Order.css';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
+import { REACT_APP_API } from '../../config/config';
 import { getAccessToken } from '../../utils/accessToken';
 
 const Order = () => {
@@ -16,7 +17,7 @@ const Order = () => {
   myHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
   useEffect(() => {
     const asyncFn = async () => {
-      const response = await fetch(`http://127.0.0.1:7777/v1/order/${id}`, { headers: myHeaders }); //,{mode: 'no-cors'}
+      const response = await fetch(`${REACT_APP_API}/order/${id}`, { headers: myHeaders }); //,{mode: 'no-cors'}
       const result = await response.json();
       //   console.log(result);
       setApp(result);
@@ -38,7 +39,7 @@ const Order = () => {
 
   const handledeleteorder = () => {
     const asyncCansel = () => {
-      fetch(`http://127.0.0.1:7777/v1/order/${id}`, {
+      fetch(`${REACT_APP_API}/order/${id}`, {
         method: 'PUT',
         headers: myHeaders,
         body: JSON.stringify({
@@ -52,7 +53,7 @@ const Order = () => {
 
   const addreport = () => {
     const asyncReport = () => {
-      fetch(`http://127.0.0.1:7777/v1/order/${id}`, {
+      fetch(`${REACT_APP_API}/order/${id}`, {
         method: 'PUT',
         headers: myHeaders,
         body: JSON.stringify({
@@ -111,6 +112,24 @@ const Order = () => {
             label="report"
             placeholder="Оставьте отзыв"
           />
+          <select
+            className="h-10 rounded-md pl-2"
+            id="mark"
+            type="mark"
+            label="mark"
+            placeholder="Оценка">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+          <input
+            className="h-10 rounded-md pl-2 mt-2"
+            id="file"
+            type="file"
+            label="file"
+            placeholder="Добавьте изображение"></input>
           <Button
             type="submit"
             variant="contained"
