@@ -10,10 +10,21 @@ const Order = () => {
   const [app, setApp] = useState([]);
   const [change, setChange] = useState(false);
   const [open, setOpen] = useState(false);
+  const [show, setShow] = useState(false);
+  const [count, setCount] = useState(0);
   const navigate = useNavigate();
   if (!getAccessToken()) {
     return <Navigate to="/login" />;
   }
+  const route = [
+    'Избушка бабы яги',
+    'Поверните направо',
+    'Пройдите до зеленого дуба',
+    'Поздоровайтесь с котом',
+    'Прямо до пруда',
+    'Утопитесь (Шутка)',
+    'Налево до гриба'
+  ];
   const myHeaders = new Headers();
   myHeaders.append('Content-Type', 'application/json');
   myHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
@@ -212,6 +223,42 @@ const Order = () => {
           }}>
           Взять в доставку
         </Button>
+      )}
+      {parseJwt()?.role === 'Courier' && (
+        <Button
+          type="submit"
+          onClick={() => setShow(!show)}
+          variant="contained"
+          style={{
+            width: '220px',
+            backgroundColor: `#3e131b`,
+            fontFamily: 'El Messiri',
+            fontSize: 16,
+            margin: '30px',
+            color: 'white'
+          }}>
+          Показать маршрут
+        </Button>
+      )}
+      {show && (
+        <div>
+          <div className="text2">Текущий адрес: {route[count]}</div>
+          <div className="text2">Адрес клиента: {app.address}</div>
+          <div className="text2">Инструкция: {route[count + 1] || app.address}</div>
+          <Button
+            variant="contained"
+            onClick={() => setCount(count + 1)}
+            style={{
+              width: '220px',
+              backgroundColor: `white`,
+              fontFamily: 'El Messiri',
+              fontSize: 12,
+              margin: '30px',
+              color: 'black'
+            }}>
+            Следующая инструкция
+          </Button>
+        </div>
       )}
       {parseJwt()?.role === 'Courier' && app.status === 'Delivering' && (
         <div className="flex flex-row gap-4">
