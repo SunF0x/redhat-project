@@ -3,6 +3,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { getAccessToken, parseJwt } from '../../utils/accessToken';
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
+import { REACT_APP_API } from '../../config/config';
 
 const Order = () => {
   const { id } = useParams();
@@ -17,7 +18,7 @@ const Order = () => {
   myHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
   useEffect(() => {
     const asyncFn = async () => {
-      const response = await fetch(`http://127.0.0.1:7777/v1/order/${id}`, { headers: myHeaders }); //,{mode: 'no-cors'}
+      const response = await fetch(`${REACT_APP_API}/order/${id}`, { headers: myHeaders }); //,{mode: 'no-cors'}
       const result = await response.json();
       //   console.log(result);
       setApp(result);
@@ -39,13 +40,13 @@ const Order = () => {
 
   const handlecookorder = () => {
     const asyncCookOper = async () => {
-      await fetch(`http://127.0.0.1:7777/v1/order/${id}`, {
+      await fetch(`${REACT_APP_API}/order/${id}`, {
         method: 'PUT',
         headers: myHeaders
       }).then(() => setChange(!change));
     };
     const asyncCourier = async () => {
-      await fetch(`http://127.0.0.1:7777/v1/order/${id}`, {
+      await fetch(`${REACT_APP_API}/order/${id}`, {
         method: 'PUT',
         headers: myHeaders,
         body: JSON.stringify({
@@ -62,7 +63,7 @@ const Order = () => {
 
   const handleready = () => {
     const asyncReady = async () => {
-      await fetch(`http://127.0.0.1:7777/v1/order/${id}`, {
+      await fetch(`${REACT_APP_API}/order/${id}`, {
         method: 'PUT',
         headers: myHeaders,
         body: JSON.stringify({

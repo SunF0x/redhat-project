@@ -2,6 +2,7 @@ import { getAccessToken, parseJwt } from '../../utils/accessToken';
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
 import { Navigate } from 'react-router-dom';
+import { REACT_APP_API } from '../../config/config';
 
 const User = () => {
   const [address, setAddress] = useState([]);
@@ -15,7 +16,7 @@ const User = () => {
   myHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
   useEffect(() => {
     const asyncFn = async () => {
-      const response = await fetch('http://127.0.0.1:7777/v1/client/address', {
+      const response = await fetch(`${REACT_APP_API}/client/address`, {
         headers: myHeaders
       });
       const result = await response.json();
@@ -26,7 +27,7 @@ const User = () => {
 
   const deleteaddress = (add) => {
     const asyncDel = async () => {
-      await fetch(`http://127.0.0.1:7777/v1/client/address/${add}`, {
+      await fetch(`${REACT_APP_API}/client/address/${add}`, {
         method: 'DELETE',
         headers: myHeaders
       }).then(() => setChange(!change));
@@ -36,7 +37,7 @@ const User = () => {
 
   const addaddress = () => {
     const asyncAdd = async () => {
-      await fetch(`http://127.0.0.1:7777/v1/client/address`, {
+      await fetch(`${REACT_APP_API}/client/address`, {
         method: 'POST',
         headers: myHeaders,
         body: document.getElementById('address').value
@@ -51,10 +52,10 @@ const User = () => {
         <div className="title2">Роль: {parseJwt()?.role}</div>
         <div className="text2"> Список доступных адресов: </div>
         {address?.map((el) => (
-          <div className="text2" key={el.clientGuid} value={el.clientGuid}>
+          <div className="text2" key={el.clientId} value={el.clientId}>
             {el.address}{' '}
             <button
-              onClick={() => deleteaddress(el.clientGuid)}
+              onClick={() => deleteaddress(el.clientId)}
               style={{ marginLeft: '20px', color: 'white' }}>
               ✕
             </button>

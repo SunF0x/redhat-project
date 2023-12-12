@@ -41,7 +41,7 @@ const Item = (element) => {
         )}
       </div>
       <SnackbarProvider />
-      <button onClick={() => addElementtoBag(el.menuItemGuid)}>✛</button>
+      <button onClick={() => addElementtoBag(el.menuItemId)}>✛</button>
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { Button, Checkbox, FormControlLabel } from '@mui/material';
 import { Navigate, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import { getAccessToken, setAccessToken } from '../../utils/accessToken';
+import { REACT_APP_API } from '../../config/config';
 import { useFormik } from 'formik';
 
 const Login = () => {
@@ -24,7 +25,7 @@ const Login = () => {
         password: values.password
       };
       if (check) {
-        await fetch('http://localhost:7777/v1/auth/register', {
+        await fetch(`${REACT_APP_API}/auth/register`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -43,7 +44,7 @@ const Login = () => {
             }
           });
       } else {
-        await fetch('http://localhost:7777/v1/auth/login', {
+        await fetch(`${REACT_APP_API}/auth/login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
