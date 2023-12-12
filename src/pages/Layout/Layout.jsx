@@ -61,8 +61,8 @@ const Layout = () => {
             Выход
           </Button>
         </div>
-        {openmenu && parseJwt().role === 'Client' && (
-          <div className="ml-8 p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
+        {openmenu && (parseJwt().role === 'Client' || parseJwt()?.role === 'SecretShopper') && (
+          <div className="z-50 ml-8 p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
             <Link to="menu" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
               Меню
             </Link>
@@ -77,7 +77,8 @@ const Layout = () => {
         {openmenu &&
           (parseJwt()?.role === 'Cook' ||
             parseJwt()?.role === 'Operator' ||
-            parseJwt()?.role === 'Courier') && (
+            parseJwt()?.role === 'Courier' ||
+            parseJwt()?.role === 'Inspector') && (
             <div className="ml-8 p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
               <Link to="process-order" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
                 Заказы
@@ -92,7 +93,14 @@ const Layout = () => {
             <Link to="process-order" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
               Заказы
             </Link>
-            <Link to="menu" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+            <Link to="report" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Отчеты
+            </Link>
+          </div>
+        )}
+        {openmenu && (parseJwt()?.role === 'SecretShopper' || parseJwt()?.role === 'Inspector') && (
+          <div className="ml-8 p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
+            <Link to="report" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
               Отчеты
             </Link>
           </div>
