@@ -87,7 +87,7 @@ const Layout = () => {
           )}
         {openmenu && parseJwt()?.role === 'Admin' && (
           <div className="ml-8 p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
-            <Link to="menu" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+            <Link to="menus" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
               Меню
             </Link>
             <Link to="process-order" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
@@ -95,6 +95,17 @@ const Layout = () => {
             </Link>
             <Link to="report" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
               Отчеты
+            </Link>
+            <Link to="user-report" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Отзывы
+            </Link>
+            <Link to="users" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Пользователи
+            </Link>
+            <Link
+              to="terms"
+              style={{ fontFamily: 'El Messiri', fontSize: 16, textAlign: 'center' }}>
+              Условия обслуживания
             </Link>
           </div>
         )}
