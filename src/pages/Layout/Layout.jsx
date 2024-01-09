@@ -2,11 +2,13 @@ import './Layout.css';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { deleteAccessToken, getAccessToken, parseJwt } from '../../utils/accessToken';
 import { Button } from '@mui/material';
+import { REACT_APP_API } from '../../config/config';
 import { useState } from 'react';
 
 const Layout = () => {
   const navigate = useNavigate();
   const [openmenu, setOpenmenu] = useState(false);
+  const [courierCode, setCouriercode] = useState(false);
   if (!getAccessToken()) {
     return <Navigate to="/login" />;
   }
@@ -15,6 +17,23 @@ const Layout = () => {
     deleteAccessToken();
     navigate('/login');
   };
+
+  const myHeaders = new Headers();
+  myHeaders.append('Content-Type', 'application/json');
+  myHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+
+  function getCourierCode() {
+    const asyncCourier = async () => {
+      const response = await fetch(`${REACT_APP_API}/profile`, {
+        method: 'GET',
+        headers: myHeaders
+      });
+      const result = await response.json();
+      setCouriercode(result?.hatCode);
+    };
+    asyncCourier();
+    return courierCode;
+  }
 
   return (
     <>
@@ -46,6 +65,20 @@ const Layout = () => {
               <Link to="user" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
                 Личный кабинет
               </Link>
+            </Button>
+          )}
+          {parseJwt()?.role === 'Courier' && (
+            <Button
+              type="submit"
+              variant="text"
+              style={{
+                width: '250px',
+                color: 'white',
+                fontFamily: 'El Messiri',
+                fontSize: 16,
+                marginLeft: '650px'
+              }}>
+              Код шапочки: {getCourierCode()}
             </Button>
           )}
           <Button
