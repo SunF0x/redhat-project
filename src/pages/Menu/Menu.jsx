@@ -8,6 +8,7 @@ import { REACT_APP_API } from '../../config/config';
 
 const Menu = () => {
   const [app, setApp] = useState([]);
+  const [promo, setPromo] = useState([]);
   if (!getAccessToken()) {
     return <Navigate to="/login" />;
   }
@@ -31,16 +32,19 @@ const Menu = () => {
       const response = await fetch(`${REACT_APP_API}/menu`, { headers: myHeaders }); //,{mode: 'no-cors'}
       const result = await response.json();
       setApp(result);
+      const res_promo = await fetch(`${REACT_APP_API}/promo`, { headers: myHeaders });
+      const promo = await res_promo.json();
+      setPromo(promo);
     };
     asyncFn();
   }, []);
 
   const images = [];
-  app?.map((el) =>
+  promo?.map((el, index) =>
     images.push({
-      id: el.menuItemId,
-      title: el.name,
-      url: `http://localhost:7777${el.photoUri}`
+      id: index,
+      title: 'promo',
+      url: `http://localhost:7777${el}`
     })
   );
   return (
