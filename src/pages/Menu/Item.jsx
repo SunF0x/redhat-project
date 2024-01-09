@@ -11,7 +11,7 @@ const Item = (element) => {
       let dict = JSON.parse(localStorage.getItem('goods'));
       let flag = false;
       for (const [key, value] of Object.entries(dict)) {
-        if (key === element) {
+        if (key == element.toString()) {
           dict[key] = value + 1;
           flag = true;
           break;
