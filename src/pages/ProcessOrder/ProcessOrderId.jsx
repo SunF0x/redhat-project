@@ -1,5 +1,6 @@
 import './ProcessOrder.css';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { SnackbarProvider, enqueueSnackbar } from 'notistack';
 import { getAccessToken, parseJwt } from '../../utils/accessToken';
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
@@ -31,7 +32,7 @@ const Order = () => {
   useEffect(() => {
     const asyncFn = async () => {
       const response = await fetch(`${REACT_APP_API}/order/${id}`, { headers: myHeaders }); //,{mode: 'no-cors'}
-      const result = await response.json();
+      const result = await response?.json();
       //   console.log(result);
       setApp(result);
     };
@@ -58,7 +59,7 @@ const Order = () => {
       }).then(() => setChange(!change));
     };
     const asyncCourier = async () => {
-      await fetch(`${REACT_APP_API}/order/${id}`, {
+      await fetch(`${REACT_APP_API}/order/take/${id}`, {
         method: 'PUT',
         headers: myHeaders,
         body: JSON.stringify({
@@ -87,18 +88,52 @@ const Order = () => {
   };
 
   const verifycourier = () => {
-    // const asyncReport = () => {
-    //   fetch(`${REACT_APP_API}/order/${id}`, {
-    //     method: 'PUT',
-    //     headers: myHeaders,
-    //     body: JSON.stringify({
-    //       method: 'report',
-    //       data: document.getElementById('report').value
-    //     })
-    //   });
-    // };
-    // asyncReport();
-    // navigate('/my-order');
+    const asyncVerify = async () => {
+      await fetch(
+        `${REACT_APP_API}/validate/hat/${document.getElementById('courier_code').value}`,
+        {
+          method: 'GET',
+          headers: myHeaders
+        }
+      )
+        .then((res) =>
+          res.status == 200
+            ? enqueueSnackbar('Верификация прошла успешно', { variant: 'success' })
+            : enqueueSnackbar('Курьер не найден', { variant: 'error' })
+        )
+        .catch((e) => {
+          console.log('Error: ' + e.message);
+          console.log(e.response);
+        });
+
+      //navigate('/process-order');
+    };
+    asyncVerify();
+  };
+
+  const verifyclient = () => {
+    const asyncVerify = async () => {
+      await fetch(`${REACT_APP_API}/order/${id}/${document.getElementById('client_code').value}`, {
+        method: 'PUT',
+        headers: myHeaders,
+        body: JSON.stringify({
+          method: 'issue'
+        })
+      })
+        .then((res) =>
+          res.status == 200
+            ? (enqueueSnackbar('Заказ доставлен', { variant: 'success' }),
+              navigate('/process-order'))
+            : enqueueSnackbar('Неверный код', { variant: 'error' })
+        )
+        .catch((e) => {
+          console.log('Error: ' + e.message);
+          console.log(e.response);
+        });
+
+      //navigate('/process-order');
+    };
+    asyncVerify();
   };
 
   return (
@@ -184,17 +219,17 @@ const Order = () => {
         </Button>
       )}
       {open && (
-        <form onSubmit={verifycourier} className="flex flex-row gap-4 ml-8 mt-4">
+        <div className="flex flex-row gap-4 ml-8 mt-4">
           <input
             className="h-10 rounded-md pl-2"
-            id="report"
-            type="report"
-            label="report"
+            id="courier_code"
+            type="courier_code"
+            label="courier_code"
             placeholder="Введите код курьера"
           />
           <Button
-            type="submit"
             variant="contained"
+            onClick={() => verifycourier()}
             style={{
               bottom: 0,
               right: 0,
@@ -205,7 +240,7 @@ const Order = () => {
             }}>
             Проверить
           </Button>
-        </form>
+        </div>
       )}
       {parseJwt()?.role === 'Courier' && (
         <Button
@@ -262,17 +297,17 @@ const Order = () => {
       )}
       {parseJwt()?.role === 'Courier' && app.status === 'Delivering' && (
         <div className="flex flex-row gap-4">
-          <form onSubmit={verifycourier} className="flex flex-row gap-4 ml-8 mt-4">
+          <div className="flex flex-row gap-4 ml-8 mt-4">
             <input
               className="h-10 rounded-md pl-2"
-              id="report"
-              type="report"
-              label="report"
+              id="client_code"
+              type="client_code"
+              label="client_code"
               placeholder="Введите код клиента"
             />
             <Button
-              type="submit"
               variant="contained"
+              onClick={verifyclient}
               style={{
                 bottom: 0,
                 right: 0,
@@ -283,7 +318,7 @@ const Order = () => {
               }}>
               Проверить
             </Button>
-          </form>
+          </div>
           <Button
             type="submit"
             onClick={handleready}
@@ -330,6 +365,7 @@ const Order = () => {
           Закрыть
         </Button>
       </div>
+      <SnackbarProvider />
     </div>
   );
 };
