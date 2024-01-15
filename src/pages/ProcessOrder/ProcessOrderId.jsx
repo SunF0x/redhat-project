@@ -74,6 +74,20 @@ const Order = () => {
     }
   };
 
+  const handledeleteorder = () => {
+    const asyncCansel = () => {
+      fetch(`${REACT_APP_API}/order/${id}`, {
+        method: 'PUT',
+        headers: myHeaders //,
+        // body: JSON.stringify({
+        //   method: 'cancel'
+        // })
+      });
+    };
+    asyncCansel();
+    navigate('/process-order');
+  };
+
   const handleready = () => {
     const asyncReady = async () => {
       await fetch(`${REACT_APP_API}/order/${id}`, {
@@ -338,7 +352,7 @@ const Order = () => {
         <Button
           disabled={app.status === 'Canceled'}
           type="submit"
-          onClick={handlecookorder}
+          onClick={handledeleteorder}
           variant="contained"
           style={{
             width: '200px',
