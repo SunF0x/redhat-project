@@ -130,7 +130,7 @@ const Login = () => {
             />
           )}
           <Link style={{ color: 'white', opacity: 0.7 }} onClick={() => setCheck(!check)}>
-            Регистрация
+            {!check ? 'Зарегистрироваться' : 'Войти'}
           </Link>
           <div className="flex place-content-center">
             <Button
