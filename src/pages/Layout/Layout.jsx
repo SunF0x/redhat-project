@@ -140,6 +140,9 @@ const Layout = () => {
               style={{ fontFamily: 'El Messiri', fontSize: 16, textAlign: 'center' }}>
               Условия обслуживания
             </Link>
+            <Link to="promo" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Промо
+            </Link>
           </div>
         )}
         {openmenu && (parseJwt()?.role === 'SecretShopper' || parseJwt()?.role === 'Inspector') && (

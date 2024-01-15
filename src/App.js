@@ -8,6 +8,7 @@ import Order from './pages/Order/Order';
 import OrderId from './pages/Order/OrderId';
 import ProcessOrder from './pages/ProcessOrder/ProcessOrder';
 import ProcessOrderId from './pages/ProcessOrder/ProcessOrderId';
+import Promo from './pages/Admin/Promo';
 import React from 'react';
 import Report from './pages/Report/Report';
 import ReportId from './pages/Report/ReportId';
@@ -35,6 +36,7 @@ const App = () => {
           <Route path="login" element={<Login />} />
 
           <Route path="/menus" element={<Menus />} />
+          <Route path="/promo" element={<Promo />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/users" element={<Users />} />
         </Routes>

@@ -68,6 +68,12 @@ button {
     max-height: 300px;
     object-fit: cover;
   }
+
+  .promo {
+    width: 50%;
+    /* max-height: 300px; */
+    /* object-fit: cover; */
+  }
   
   /* Next & previous buttons */
   .prev,
