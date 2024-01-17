@@ -104,17 +104,24 @@ const Order = () => {
   const verifycourier = () => {
     const asyncVerify = async () => {
       await fetch(
-        `${REACT_APP_API}/validate/hat/${document.getElementById('courier_code').value}`,
+        `${REACT_APP_API}/order/giveToCourier/${
+          document.getElementById('courier_code').value
+        }/${id}`,
         {
-          method: 'GET',
+          method: 'PUT',
           headers: myHeaders
         }
       )
-        .then((res) =>
-          res.status == 200
-            ? enqueueSnackbar('Верификация прошла успешно', { variant: 'success' })
-            : enqueueSnackbar('Курьер не найден', { variant: 'error' })
-        )
+        .then((res) => {
+          if (res.status == 200) {
+            enqueueSnackbar('Верификация прошла успешно. Заказ выдан', { variant: 'success' });
+            window.setTimeout(function () {
+              navigate('/process-order');
+            }, 5000);
+          } else {
+            enqueueSnackbar('Курьер не найден', { variant: 'error' });
+          }
+        })
         .catch((e) => {
           console.log('Error: ' + e.message);
           console.log(e.response);
@@ -247,12 +254,12 @@ const Order = () => {
             style={{
               bottom: 0,
               right: 0,
-              width: '150px',
+              width: '250px',
               backgroundColor: `#90182E`,
               fontFamily: 'El Messiri',
               fontSize: 16
             }}>
-            Проверить
+            Выдать заказ курьеру
           </Button>
         </div>
       )}
