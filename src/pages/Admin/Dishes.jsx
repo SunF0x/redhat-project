@@ -12,6 +12,7 @@ const Dishes = (element) => {
   const [create, setCreate] = useState(false);
   const [update, setUpdate] = useState(false);
   const [file, setFile] = useState(null);
+  const [new_file, setNewFile] = useState(null);
   const el = element?.element;
   const myHeaders = new Headers();
   myHeaders.append('Content-Type', 'application/json');
@@ -43,10 +44,9 @@ const Dishes = (element) => {
   };
 
   const handleFileUpload = (e) => {
-    // if (e.target.files) {
-    //   setFile(e.target.files[0]);
-    // }
-    setFieldValue('file', e.target.files[0]);
+    if (e.target.files) {
+      setNewFile(e.target.files[0]);
+    }
   };
 
   const addDish = (e) => {
@@ -78,13 +78,12 @@ const Dishes = (element) => {
   const { values, handleChange, handleSubmit, setFieldValue } = useFormik({
     initialValues: {
       name: el.name,
-      description: el.description,
-      file: ''
+      description: el.description
     },
     onSubmit: async (values) => {
       console.log(values);
       const formData = new FormData();
-      if (values.file !== '') formData.append(`image`, values.file);
+      if (new_file) formData.append(`image`, new_file);
       if (values.name !== el.name) formData.append('name', values.name);
       if (values.description !== el.description) formData.append('description', values.description);
 
@@ -223,9 +222,9 @@ const Dishes = (element) => {
             />
             <input
               className="h-10 rounded-md pl-2 mt-2"
-              id="file"
+              id="new_file"
               type="file"
-              label="file"
+              label="new_file"
               onChange={handleFileUpload}
               value={values.file}
               // onChange={handleChange}
