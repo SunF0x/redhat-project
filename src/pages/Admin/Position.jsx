@@ -20,14 +20,14 @@ const Position = (element) => {
   myHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
   const deleteDishes = (id) => {
     const asyncCansel = () => {
-      fetch(`${REACT_APP_API}/menu/dish/${id}`, {
+      fetch(`${REACT_APP_API}/menuitem/${id}`, {
         method: 'DELETE',
         headers: myHeaders //,
       }).then((res) => {
-        if (res.status == 200) {
+        if (res.status == 204) {
           window.location.reload();
         } else {
-          enqueueSnackbar('Не удалось удалить блюдо', { variant: 'error' });
+          enqueueSnackbar('Не удалось удалить позицию', { variant: 'error' });
         }
       });
     };
@@ -92,6 +92,7 @@ const Position = (element) => {
           ''
         )}
       </div>
+      <button onClick={() => deleteDishes(el.id)}>🗑</button>
       <SnackbarProvider />
       {/* <button onClick={() => addElementtoBag(el.menuItemId)}>✛</button> */}
     </div>
