@@ -4,6 +4,7 @@ import Layout from './pages/Layout/Layout';
 import Login from './pages/Login/Login';
 import Menu from './pages/Menu/Menu';
 import Menus from './pages/Admin/Menus';
+import MenusId from './pages/Admin/MenusId';
 import Order from './pages/Order/Order';
 import OrderId from './pages/Order/OrderId';
 import ProcessOrder from './pages/ProcessOrder/ProcessOrder';
@@ -36,6 +37,7 @@ const App = () => {
           <Route path="login" element={<Login />} />
 
           <Route path="/menus" element={<Menus />} />
+          <Route path="/menus/:id" element={<MenusId />} />
           <Route path="/promo" element={<Promo />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/users" element={<Users />} />

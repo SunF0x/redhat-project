@@ -1,7 +1,8 @@
+import { Link, Navigate } from 'react-router-dom';
 import { getAccessToken, parseJwt } from '../../utils/accessToken';
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
-import { Navigate } from 'react-router-dom';
+import Dishes from './Dishes';
 import { REACT_APP_API } from '../../config/config';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,6 +13,7 @@ import TableRow from '@mui/material/TableRow';
 
 const Menus = () => {
   const [menu, setMenu] = useState([]);
+  const [dishes, setDish] = useState([]);
   if (!(parseJwt()?.role == 'Admin')) {
     return <Navigate to="/" />;
   }
@@ -23,6 +25,9 @@ const Menus = () => {
       const response = await fetch(`${REACT_APP_API}/menus`, { headers: myHeaders }); //,{mode: 'no-cors'}
       const result = await response.json();
       setMenu(result);
+      const response2 = await fetch(`${REACT_APP_API}/menu/dishes`, { headers: myHeaders }); //,{mode: 'no-cors'}
+      const result2 = await response2.json();
+      setDish(result2);
     };
     asyncFn();
   }, []);
@@ -65,7 +70,9 @@ const Menus = () => {
                   className="goods"
                   align="center"
                   sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                  {menu.menuName}
+                  <Link style={{ textDecoration: 'underline' }} to={`${menu.menuId}`}>
+                    {menu.menuName}
+                  </Link>
                 </TableCell>
                 <TableCell
                   className="goods"
@@ -77,6 +84,17 @@ const Menus = () => {
             ))}
           </TableBody>
         </Table>
+      </div>
+      <div className="pole">
+        <div className="title2">Блюда</div>
+        {dishes.length > 0
+          ? dishes?.map((el) => (
+              <div key={el.menuItemId}>
+                <Dishes element={el} />
+                <div className="Line"></div>
+              </div>
+            ))
+          : ''}
       </div>
     </div>
   );

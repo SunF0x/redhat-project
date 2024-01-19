@@ -1,6 +1,6 @@
 import './Report.css';
 import { Link, Navigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -16,7 +16,8 @@ import { getAccessToken } from '../../utils/accessToken';
 const Report = () => {
   const [app, setApp] = useState([]);
   const [create, setCreate] = useState(false);
-  const [file, setFile] = useState([]);
+  // const [file, setFile] = useState([]);
+  const [file, setFile] = useState(null);
 
   if (!getAccessToken()) {
     return <Navigate to="/login" />;
@@ -39,37 +40,75 @@ const Report = () => {
     setCreate(!create);
   };
 
-  const handleFile = (event) => {
-    // if (file && file.length > 0) {
-    //   setFile([...file, URL.createObjectURL(event.target.files[file.length])]);
-    // } else {URL.createObjectURL(
-    setFile(event.target.files[0]);
-    // }
+  // const handleFile = (event) => {
+  //   // if (file && file.length > 0) {
+  //   //   setFile([...file, URL.createObjectURL(event.target.files[file.length])]);
+  //   // } else {URL.createObjectURL(
+  //   setFile(event.target.files[0]);
+  //   // }
+  // };
+
+  const handleFile = (e) => {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+    }
   };
 
   console.log(file);
 
-  const addreport = () => {
+  let fileReader = new FileReader();
+
+  function getByteArray(file) {
+    return new Promise(function (resolve, reject) {
+      fileReader.readAsArrayBuffer(file);
+      fileReader.onload = function (ev) {
+        const array = new Uint8Array(ev.target.result);
+        const fileByteArray = [];
+        for (let i = 0; i < array.length; i++) {
+          fileByteArray.push(array[i]);
+        }
+        resolve(array); // successful
+      };
+      fileReader.onerror = reject; // call reject if error
+    });
+  }
+
+  const addreport = (e) => {
+    e.preventDefault();
     const asyncReport = () => {
       const formData = new FormData();
-      // file.map((el, i) => {
-      //   i == 0 ? formData.append(`photo`, el) : formData.append(`photo${i}`, el);
-      // });
       formData.append(`photo`, file);
       formData.append('data', document.getElementById('report').value);
       formData.append('verdict', document.getElementById('verdict').value);
+      // file.map((el, i) => {
+      //   i == 0 ? formData.append(`photo`, el) : formData.append(`photo${i}`, el);
+      // });
+
       const myHeaders = new Headers();
-      // myHeaders.append('Content-Type', 'multipart/*');
-      myHeaders.append('Accept', 'application/json');
       myHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
       fetch(`${REACT_APP_API}/report`, {
         method: 'POST',
         headers: myHeaders,
         body: formData
-      });
+      }).then((res) => (res.status == 201 ? setCreate(false) : alert('Something wrong')));
+      console.log(file);
     };
     asyncReport();
   };
+
+  const myHeaders1 = new Headers();
+  // myHeaders.append('Content-Type', 'multipart/*');
+  myHeaders1.append('Accept', 'application/json');
+  myHeaders1.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+
+  // document.addEventListener.uploadForm.onsubmit = async (e) => {
+  //   e.preventDefault();
+  //   fetch(`${REACT_APP_API}/report`, {
+  //     method: 'POST',
+  //     headers: myHeaders1,
+  //     body: new FormData(uploadForm)
+  //   });
+  // };
 
   return (
     <div className="fon">
@@ -93,7 +132,13 @@ const Report = () => {
         </Button>
         <Dialog onClose={() => setCreate(false)} open={create}>
           <DialogContent className="bg-[rgb(245,229,231,0.9)]">
-            <div className="flex flex-col gap-4 mt-4">
+            <form
+              method="POST"
+              // encType="multipart/form-data"
+              id="uploadForm"
+              name="report"
+              onSubmit={addreport}
+              className="flex flex-col gap-4 mt-4">
               <input
                 className="h-10 rounded-md pl-2"
                 id="report"
@@ -121,7 +166,7 @@ const Report = () => {
                 <Button
                   type="submit"
                   variant="contained"
-                  onClick={addreport}
+                  // onClick={addreport}
                   style={{
                     bottom: 0,
                     right: 0,
@@ -133,7 +178,7 @@ const Report = () => {
                   Создать отчет
                 </Button>
                 <Button
-                  type="submit"
+                  // type="submit"
                   variant="contained"
                   onClick={() => setCreate(false)}
                   style={{
@@ -147,7 +192,7 @@ const Report = () => {
                   Закрыть
                 </Button>
               </div>
-            </div>
+            </form>
           </DialogContent>
         </Dialog>
         <Table sx={{ minWidth: 650, padding: 10 }} aria-label="simple table">
