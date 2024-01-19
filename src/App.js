@@ -13,6 +13,8 @@ import Promo from './pages/Admin/Promo';
 import React from 'react';
 import Report from './pages/Report/Report';
 import ReportId from './pages/Report/ReportId';
+import ReportPub from './pages/Report/ReportPub';
+import ReportUser from './pages/Report/ReportUser';
 import Terms from './pages/Admin/Terms';
 import User from './pages/User/User';
 import Users from './pages/Admin/Users';
@@ -34,6 +36,8 @@ const App = () => {
           <Route path="/process-order/:id" element={<ProcessOrderId />} />
           <Route path="/report" element={<Report />} />
           <Route path="/report/:id" element={<ReportId />} />
+          <Route path="/report-public" element={<ReportPub />} />
+          <Route path="/report-user" element={<ReportUser />} />
           <Route path="login" element={<Login />} />
 
           <Route path="/menus" element={<Menus />} />

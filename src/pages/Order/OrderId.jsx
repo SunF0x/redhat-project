@@ -8,6 +8,7 @@ import { getAccessToken } from '../../utils/accessToken';
 const Order = () => {
   const { id } = useParams();
   const [app, setApp] = useState([]);
+  const [file, setFile] = useState('');
   const navigate = useNavigate();
   if (!getAccessToken()) {
     return <Navigate to="/login" />;
@@ -18,7 +19,7 @@ const Order = () => {
   useEffect(() => {
     const asyncFn = async () => {
       const response = await fetch(`${REACT_APP_API}/order/${id}`, { headers: myHeaders }); //,{mode: 'no-cors'}
-      const result = await response.json();
+      const result = await response?.json();
       //   console.log(result);
       setApp(result);
     };
@@ -51,19 +52,31 @@ const Order = () => {
     navigate('/my-order');
   };
 
-  const addreport = () => {
+  const handleFile = (e) => {
+    if (e.target.files) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const addreport = (e) => {
+    e.preventDefault();
     const asyncReport = () => {
-      fetch(`${REACT_APP_API}/order/${id}`, {
-        method: 'PUT',
+      const formData = new FormData();
+      formData.append(`photo`, file);
+      formData.append(`method`, 'report');
+      formData.append('data', document.getElementById('report').value);
+      formData.append('mark', document.getElementById('mark').value);
+
+      const myHeaders = new Headers();
+      myHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+      fetch(`${REACT_APP_API}/order/report/${id}`, {
+        method: 'POST',
         headers: myHeaders,
-        body: JSON.stringify({
-          method: 'report',
-          data: document.getElementById('report').value
-        })
-      });
+        body: formData
+      }).then((res) => (res.status == 201 ? navigate('/my-order') : alert('Something wrong')));
     };
     asyncReport();
-    navigate('/my-order');
+    // navigate('/my-order');
   };
 
   return (
@@ -130,6 +143,8 @@ const Order = () => {
             id="file"
             type="file"
             label="file"
+            onChange={handleFile}
+            accept="image/*,image/jpeg"
             placeholder="Добавьте изображение"></input>
           <Button
             type="submit"

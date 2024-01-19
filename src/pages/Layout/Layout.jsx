@@ -105,6 +105,16 @@ const Layout = () => {
             <Link to="my-order" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
               Мои заказы
             </Link>
+            <Link to="report-public" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Отзывы
+            </Link>
+          </div>
+        )}
+        {openmenu && parseJwt().role === 'Client' && (
+          <div className="z-50 ml-8 mt-[-7px] p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
+            <Link to="report-user" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Мои отзывы
+            </Link>
           </div>
         )}
         {openmenu &&
@@ -146,7 +156,7 @@ const Layout = () => {
           </div>
         )}
         {openmenu && (parseJwt()?.role === 'SecretShopper' || parseJwt()?.role === 'Inspector') && (
-          <div className="ml-8 p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
+          <div className="ml-8 p-2 w-36 mt-[-7px] bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
             <Link to="report" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
               Отчеты
             </Link>
