@@ -12,6 +12,8 @@ import ProcessOrderId from './pages/ProcessOrder/ProcessOrderId';
 import Promo from './pages/Admin/Promo';
 import React from 'react';
 import Report from './pages/Report/Report';
+import ReportAdmin from './pages/Admin/ReportAdmin';
+import ReportAdminId from './pages/Admin/ReportAdminId';
 import ReportId from './pages/Report/ReportId';
 import ReportPub from './pages/Report/ReportPub';
 import ReportUser from './pages/Report/ReportUser';
@@ -45,6 +47,8 @@ const App = () => {
           <Route path="/promo" element={<Promo />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/users" element={<Users />} />
+          <Route path="/report-admin" element={<ReportAdmin />} />
+          <Route path="/report-admin/:id" element={<ReportAdminId />} />
         </Routes>
       </Router>
     </div>

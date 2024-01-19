@@ -51,6 +51,15 @@ const ReportPub = () => {
                 sx={{ fontFamily: 'El Messiri', fontSize: 18, fontWeight: 700 }}>
                 Дата
               </TableCell>
+              <TableCell sx={{ fontFamily: 'El Messiri', fontSize: 18, fontWeight: 700 }}>
+                Оценка
+              </TableCell>
+              <TableCell sx={{ fontFamily: 'El Messiri', fontSize: 18, fontWeight: 700 }}>
+                Отзыв
+              </TableCell>
+              <TableCell sx={{ fontFamily: 'El Messiri', fontSize: 18, fontWeight: 700 }}>
+                Изображение
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -65,7 +74,7 @@ const ReportPub = () => {
                     component="th"
                     scope="row"
                     sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                    <Link style={{ textDecoration: 'underline' }} to={`${row.reportId}`}>
+                    <Link style={{ textDecoration: 'underline' }}>
                       Отчет №{row.reportId} {console.log(row.reportId)}
                     </Link>
                   </TableCell>
@@ -75,12 +84,24 @@ const ReportPub = () => {
                     sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
                     {row.created.substring(0, 10)} {row.created.substring(11, 19)}
                   </TableCell>
-                  {/* <TableCell
+                  <TableCell
                     className="goods"
                     align="center"
                     sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                    {row.result}
-                  </TableCell> */}
+                    {row.mark}
+                  </TableCell>
+                  <TableCell
+                    className="goods"
+                    align="center"
+                    sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+                    {row.text}
+                  </TableCell>
+                  <TableCell
+                    className="goods"
+                    align="center"
+                    sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+                    <img src={`http://localhost:7777${row.dataUris[0]}`} />
+                  </TableCell>
                 </TableRow>
               ))}
           </TableBody>

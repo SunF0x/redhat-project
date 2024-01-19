@@ -139,7 +139,7 @@ const Layout = () => {
             <Link to="report" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
               Отчеты
             </Link>
-            <Link to="user-report" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+            <Link to="report-admin" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
               Отзывы
             </Link>
             <Link to="users" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
