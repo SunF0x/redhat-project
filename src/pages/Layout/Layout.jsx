@@ -136,7 +136,7 @@ const Layout = () => {
             <Link to="process-order" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
               Заказы
             </Link>
-            <Link to="report" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+            <Link to="inspect-admin" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
               Отчеты
             </Link>
             <Link to="report-admin" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>

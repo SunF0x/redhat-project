@@ -1,5 +1,7 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'; //Navigate,
 import Bag from './pages/Bag/Bag';
+import InspectAdmin from './pages/Admin/InspectAdmin';
+import InspectAdminId from './pages/Admin/InspectAdminId';
 import Layout from './pages/Layout/Layout';
 import Login from './pages/Login/Login';
 import Menu from './pages/Menu/Menu';
@@ -51,6 +53,8 @@ const App = () => {
           <Route path="/users/:id" element={<UsersId />} />
           <Route path="/report-admin" element={<ReportAdmin />} />
           <Route path="/report-admin/:id" element={<ReportAdminId />} />
+          <Route path="/inspect-admin" element={<InspectAdmin />} />
+          <Route path="/inspect-admin/:id" element={<InspectAdminId />} />
         </Routes>
       </Router>
     </div>
