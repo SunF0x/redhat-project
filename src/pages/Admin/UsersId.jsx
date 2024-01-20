@@ -1,11 +1,10 @@
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { SnackbarProvider, enqueueSnackbar } from 'notistack';
 import { getAccessToken, parseJwt } from '../../utils/accessToken';
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
-
 import { REACT_APP_API } from '../../config/config';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -15,11 +14,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useFormik } from 'formik';
 
-const Users = () => {
-  const [open, setOpen] = useState(false);
+const UsersId = () => {
+  const { id } = useParams();
   const [create, setCreate] = useState(false);
   const [users, setUsers] = useState([]);
-  const [filter_users, setFilterUsers] = useState([]);
+  const navigate = useNavigate();
   if (!(parseJwt()?.role == 'Admin')) {
     return <Navigate to="/" />;
   }
@@ -29,10 +28,9 @@ const Users = () => {
 
   useEffect(() => {
     const asyncFn = async () => {
-      const response = await fetch(`${REACT_APP_API}/admin/users`, { headers: myHeaders }); //,{mode: 'no-cors'}
+      const response = await fetch(`${REACT_APP_API}/admin/user/${id}`, { headers: myHeaders }); //,{mode: 'no-cors'}
       const result = await response.json();
       setUsers(result);
-      setFilterUsers(result);
     };
     asyncFn();
   }, []);
@@ -84,39 +82,40 @@ const Users = () => {
 
   const { values, handleChange, handleSubmit, setFieldValue } = useFormik({
     initialValues: {
-      login: '',
+      login: users.login,
       password: '',
-      role: 'Client',
-      name: null,
-      redhat: null
+      //role: users.role,
+      name: users?.name || null,
+      redhat: users?.hatCode || null
     },
     onSubmit: async (values) => {
-      console.log(document.getElementById('select_field').value);
       let value = '';
-      if (document.getElementById('select_field').value === 'Courier') {
+      if (users.role === 'Courier') {
         value = {
           login: values.login,
           password: values.password,
-          role: document.getElementById('select_field').value,
           name: values.name,
           hatCode: values.redhat
         };
+        if (values.redhat == users.hatCode) delete value['hatCode'];
       } else {
         value = {
           login: values.login,
           password: values.password,
-          role: document.getElementById('select_field').value,
           name: values.name
         };
       }
-      fetch(`${REACT_APP_API}/admin/user`, {
-        method: 'POST',
+      if (values.password == '') delete value['password'];
+      if (values.name == users?.name && values.name == null) delete value['name'];
+      if (values.login == users.login) delete value['login'];
+      fetch(`${REACT_APP_API}/admin/user/${users.id}`, {
+        method: 'PUT',
         headers: myHeaders,
         body: JSON.stringify(value)
       }).then((res) => {
-        if (res.status == 201) {
+        if (res.status == 200) {
           setCreate(false);
-          window.location.reload();
+          //window.location.reload();
         } else {
           alert('Something wrong');
         }
@@ -133,93 +132,11 @@ const Users = () => {
 
   return (
     <div className="fon">
-      <div className="pole">
-        <div className="title2">Пользователи</div>
-        <div className="flex flex-row gap-2"></div>
-        <input
-          className="h-10 rounded-md pl-2 ml-4"
-          id="search"
-          type="serch"
-          label="search"
-          placeholder="Поиск"
-        />
-        <button className="ml-4 w-24" onClick={filterUser}>
-          Искать
-        </button>
-        <Table sx={{ minWidth: 650, padding: 10 }} aria-label="simple table">
-          <TableHead sx={{ fontFamily: 'El Messiri', fontSize: 18 }}>
-            <TableRow>
-              <TableCell sx={{ fontFamily: 'El Messiri', fontSize: 18, fontWeight: 700 }}>
-                ID
-              </TableCell>
-              <TableCell
-                align="center"
-                sx={{ fontFamily: 'El Messiri', fontSize: 18, fontWeight: 700 }}>
-                Логин
-              </TableCell>
-              <TableCell
-                align="center"
-                sx={{ fontFamily: 'El Messiri', fontSize: 18, fontWeight: 700 }}>
-                Роль
-              </TableCell>
-              <TableCell
-                align="center"
-                sx={{ fontFamily: 'El Messiri', fontSize: 18, fontWeight: 700 }}>
-                Cтатус
-              </TableCell>
-              <TableCell
-                align="center"
-                sx={{ fontFamily: 'El Messiri', fontSize: 18, fontWeight: 700 }}>
-                Удалить
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filter_users?.length > 0 &&
-              filter_users?.map(
-                (user) =>
-                  user.login.lastIndexOf(document.getElementById('search').value, 0) === 0 && (
-                    <TableRow
-                      key={user.username}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                      <TableCell
-                        className="goods"
-                        component="th"
-                        scope="row"
-                        sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                        {user.id}
-                      </TableCell>
-                      <TableCell
-                        className="goods"
-                        align="center"
-                        sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                        <Link style={{ textDecoration: 'underline' }} to={`${user.id}`}>
-                          {user.login}
-                        </Link>
-                      </TableCell>
-                      <TableCell
-                        className="goods"
-                        align="center"
-                        sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                        {user.role}
-                      </TableCell>
-                      <TableCell
-                        className="goods"
-                        align="center"
-                        sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                        {user.isDeleted ? 'Удален' : 'В системе'}
-                      </TableCell>
-                      <TableCell
-                        className="goods"
-                        align="center"
-                        sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                        <button onClick={() => deleteUser(user.id)}>🗑</button>
-                      </TableCell>
-                    </TableRow>
-                  )
-              )}
-          </TableBody>
-        </Table>
+      <div className="pole1">
+        <div className="title2">Пользователь</div>
+        <div className="text2">Логин: {users.login}</div>
+        <div className="text2">Роль: {users.role}</div>
+        {users.role === 'Courier' && <div className="text2">Код: {users.hatCode}</div>}
         <SnackbarProvider />
         <Button
           type="submit"
@@ -235,7 +152,7 @@ const Users = () => {
             fontFamily: 'El Messiri',
             fontSize: 16
           }}>
-          Добавить пользователя
+          Внести изменения
         </Button>
         <Dialog onClose={() => setCreate(false)} open={create}>
           <DialogContent className="bg-[rgb(245,229,231,0.9)]">
@@ -250,6 +167,7 @@ const Users = () => {
                 type="text"
                 label="login"
                 placeholder="Логин"
+                defaultValue={users.login}
                 value={values.login}
                 onChange={handleChange}
               />
@@ -271,20 +189,21 @@ const Users = () => {
                 value={values.name}
                 onChange={handleChange}
               />
-              <select id="select_field" className="h-12 w-96 rounded-md pl-2">
+              {/* <select id="select_field" className="h-12 w-96 rounded-md pl-2">
                 {rolelist?.length !== 0 &&
                   rolelist?.map((el) => (
-                    <option key={el.id} value={el.role}>
+                    <option key={el.id} selected={el.role === users.role} value={el.role}>
                       {el.role}
                     </option>
                   ))}
-              </select>
+              </select> */}
               <input
                 className="h-10 rounded-md pl-2"
                 id="redhat"
                 type="text"
                 label="redhat"
                 placeholder="Код шапки (только для курьера)"
+                defaultValue={users?.hatCode}
                 value={values.redhat}
                 onChange={handleChange}
               />
@@ -301,7 +220,7 @@ const Users = () => {
                     fontFamily: 'El Messiri',
                     fontSize: 16
                   }}>
-                  Создать
+                  Обновить
                 </Button>
                 <Button
                   // type="submit"
@@ -321,8 +240,22 @@ const Users = () => {
             </form>
           </DialogContent>
         </Dialog>
+        <div className="button-left">
+          <Button
+            type="submit"
+            onClick={() => navigate('/users')}
+            variant="contained"
+            style={{
+              width: '150px',
+              backgroundColor: `#90182E`,
+              fontFamily: 'El Messiri',
+              fontSize: 16
+            }}>
+            Закрыть
+          </Button>
+        </div>
       </div>
     </div>
   );
 };
-export default Users;
+export default UsersId;

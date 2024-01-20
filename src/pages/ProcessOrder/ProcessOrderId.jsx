@@ -59,7 +59,9 @@ const Order = () => {
   useEffect(() => {
     const asyncFn = async () => {
       if (app.address) {
-        const response = await fetch(`http://localhost:7778/v1/location/${app.address}`); //,{mode: 'no-cors'}
+        const response = await fetch(`http://localhost:7778/v1/location/${app.address}`).catch(
+          (err) => console.log(err)
+        );
         const result = await response?.json();
         //   console.log(result);
         setRoute(result.routes);

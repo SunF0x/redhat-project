@@ -20,6 +20,7 @@ import ReportUser from './pages/Report/ReportUser';
 import Terms from './pages/Admin/Terms';
 import User from './pages/User/User';
 import Users from './pages/Admin/Users';
+import UsersId from './pages/Admin/UsersId';
 // import { parseJwt } from './utils/accessToken';
 
 const App = () => {
@@ -47,6 +48,7 @@ const App = () => {
           <Route path="/promo" element={<Promo />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/users" element={<Users />} />
+          <Route path="/users/:id" element={<UsersId />} />
           <Route path="/report-admin" element={<ReportAdmin />} />
           <Route path="/report-admin/:id" element={<ReportAdminId />} />
         </Routes>
