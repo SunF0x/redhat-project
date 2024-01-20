@@ -13,19 +13,33 @@ const Order = () => {
   const [open, setOpen] = useState(false);
   const [show, setShow] = useState(false);
   const [count, setCount] = useState(0);
+  const [route, setRoute] = useState([
+    {
+      street: 'Русалочий Бульвар, дом 4',
+      route: 'Преодолейте 65 шагов вдоль дорожки из звездной пыли.'
+    },
+    {
+      street: 'Кот Матроскин Переулок, дом 11',
+      route: 'Пройдите мимо ковра из цветов, сделав 50 метров.'
+    },
+    {
+      street: 'Красная Шапочка Проспект, дом 25',
+      route: 'Пройдите мимо озера лебедей, сделав 110 шагов.'
+    },
+    {
+      street: 'Жар-птичья Улочка, дом 18',
+      route: 'Сверните направо у кованых ворот, пройдя 30 метров.'
+    },
+    {
+      street: 'Косматый Медвежий Проход, дом 6',
+      route: 'Следуйте к замку Царевны Лебеди, пройдя 95 шагов.'
+    }
+  ]);
   const navigate = useNavigate();
   if (!getAccessToken()) {
     return <Navigate to="/login" />;
   }
-  const route = [
-    'Избушка бабы яги',
-    'Поверните направо',
-    'Пройдите до зеленого дуба',
-    'Поздоровайтесь с котом',
-    'Прямо до пруда',
-    'Утопитесь (Шутка)',
-    'Налево до гриба'
-  ];
+
   const myHeaders = new Headers();
   myHeaders.append('Content-Type', 'application/json');
   myHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
@@ -41,6 +55,19 @@ const Order = () => {
     //   localStorage.setItem('goods', []);
     // }
   }, [change]);
+
+  useEffect(() => {
+    const asyncFn = async () => {
+      if (app.address) {
+        const response = await fetch(`http://localhost:7778/v1/location/${app.address}`); //,{mode: 'no-cors'}
+        const result = await response?.json();
+        //   console.log(result);
+        setRoute(result.routes);
+      }
+    };
+    asyncFn();
+    // const asyncFn = async () => {
+  }, [app]);
 
   function countsum() {
     let sum = 0;
@@ -298,9 +325,9 @@ const Order = () => {
       )}
       {show && (
         <div>
-          <div className="text2">Текущий адрес: {route[count]}</div>
+          <div className="text2">Текущий адрес: {route[count]?.street}</div>
           <div className="text2">Адрес клиента: {app.address}</div>
-          <div className="text2">Инструкция: {route[count + 1] || app.address}</div>
+          <div className="text2">Инструкция: {route[count]?.route || app.address}</div>
           <Button
             variant="contained"
             onClick={() => setCount(count + 1)}
