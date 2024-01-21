@@ -31,7 +31,7 @@ const Menus = () => {
       setDish(result2);
     };
     asyncFn();
-  }, []);
+  }, [open]);
 
   const AddMenu = () => {
     const asyncVerify = async () => {
@@ -40,7 +40,7 @@ const Menus = () => {
         headers: myHeaders,
         body: document.getElementById('menu_name').value
       })
-        .then((res) => (res.status == 201 ? window.location.reload() : alert('Something wrong')))
+        .then((res) => (res.status == 201 ? '' : alert('Something wrong')))
         .catch((e) => {
           console.log('Error: ' + e.message);
           console.log(e.response);

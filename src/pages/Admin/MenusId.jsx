@@ -40,7 +40,7 @@ const MenusId = () => {
         method: 'PUT',
         headers: myHeaders
       })
-        .then((res) => (res.status == 200 ? window.location.reload() : alert('Something wrong')))
+        .then((res) => (res.status == 200 ? navigate('/menus') : alert('Something wrong')))
         .catch((e) => {
           console.log('Error: ' + e.message);
           console.log(e.response);
@@ -57,7 +57,7 @@ const MenusId = () => {
         method: 'PUT',
         headers: myHeaders
       })
-        .then((res) => (res.status == 200 ? window.location.reload() : alert('Something wrong')))
+        .then((res) => (res.status == 200 ? navigate('/menus') : alert('Something wrong')))
         .catch((e) => {
           console.log('Error: ' + e.message);
           console.log(e.response);
@@ -82,7 +82,7 @@ const MenusId = () => {
         headers: myHeaders,
         body: JSON.stringify(value)
       })
-        .then((res) => (res.status == 201 ? window.location.reload() : alert('Something wrong')))
+        .then((res) => (res.status == 201 ? navigate('/menus') : alert('Something wrong')))
         .catch((e) => {
           console.log('Error: ' + e.message);
           console.log(e.response);

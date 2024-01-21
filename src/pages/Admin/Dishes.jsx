@@ -24,7 +24,7 @@ const Dishes = (element) => {
         headers: myHeaders //,
       }).then((res) => {
         if (res.status == 200) {
-          window.location.reload();
+          enqueueSnackbar('Блюдо удалено', { variant: 'success' });
         } else {
           enqueueSnackbar('Не удалось удалить блюдо', { variant: 'error' });
         }
@@ -66,9 +66,9 @@ const Dishes = (element) => {
       }).then((res) => {
         if (res.status == 201) {
           setCreate(false);
-          window.location.reload();
+          enqueueSnackbar('Блюдо создано', { variant: 'success' });
         } else {
-          alert('Something wrong');
+          enqueueSnackbar('Блюдо создать не удалось', { variant: 'error' });
         }
       });
     };
@@ -96,9 +96,9 @@ const Dishes = (element) => {
       }).then((res) => {
         if (res.status == 200) {
           setUpdate(false);
-          window.location.reload();
+          enqueueSnackbar('Блюдо обновлено', { variant: 'success' });
         } else {
-          alert('Something wrong');
+          enqueueSnackbar('Блюдо не удалось обновить', { variant: 'error' });
         }
       });
     }

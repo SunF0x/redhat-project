@@ -35,7 +35,7 @@ const Users = () => {
       setFilterUsers(result);
     };
     asyncFn();
-  }, []);
+  }, [open]);
 
   const rolelist = [
     {
@@ -73,7 +73,8 @@ const Users = () => {
         headers: myHeaders //,
       }).then((res) => {
         if (res.status == 200) {
-          window.location.reload();
+          setOpen(!open);
+          enqueueSnackbar('Пользователь удален', { variant: 'success' });
         } else {
           enqueueSnackbar('Не удалось удалить пользователя', { variant: 'error' });
         }
@@ -116,9 +117,10 @@ const Users = () => {
       }).then((res) => {
         if (res.status == 201) {
           setCreate(false);
-          window.location.reload();
+          setOpen(!open);
+          enqueueSnackbar('Данные пользователя обновлены', { variant: 'success' });
         } else {
-          alert('Something wrong');
+          enqueueSnackbar('Не удалось обновить данные пользователя', { variant: 'error' });
         }
       });
     }

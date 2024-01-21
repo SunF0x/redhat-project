@@ -33,7 +33,7 @@ const UsersId = () => {
       setUsers(result);
     };
     asyncFn();
-  }, []);
+  }, [create]);
 
   const rolelist = [
     {
@@ -61,24 +61,6 @@ const UsersId = () => {
       role: 'SecretShopper'
     }
   ];
-
-  const deleteUser = (id) => {
-    const asyncCansel = () => {
-      const myHeaders = new Headers();
-      myHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
-      fetch(`${REACT_APP_API}/admin/user/${id}`, {
-        method: 'DELETE',
-        headers: myHeaders //,
-      }).then((res) => {
-        if (res.status == 200) {
-          window.location.reload();
-        } else {
-          enqueueSnackbar('Не удалось удалить пользователя', { variant: 'error' });
-        }
-      });
-    };
-    asyncCansel();
-  };
 
   const { values, handleChange, handleSubmit, setFieldValue } = useFormik({
     initialValues: {
@@ -115,7 +97,6 @@ const UsersId = () => {
       }).then((res) => {
         if (res.status == 200) {
           setCreate(false);
-          //window.location.reload();
         } else {
           alert('Something wrong');
         }

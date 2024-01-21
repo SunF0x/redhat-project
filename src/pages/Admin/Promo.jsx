@@ -13,6 +13,7 @@ import TableRow from '@mui/material/TableRow';
 const Promo = () => {
   const [promo, setPromo] = useState([]);
   const [open, setOpen] = useState(false);
+  const [change, setChange] = useState(false);
   const [file, setFile] = useState('');
   if (!(parseJwt()?.role == 'Admin')) {
     return <Navigate to="/" />;
@@ -27,7 +28,7 @@ const Promo = () => {
       setPromo(result);
     };
     asyncFn();
-  }, []);
+  }, [open, change]);
 
   const handleFile = (e) => {
     if (e.target.files) {
@@ -50,8 +51,7 @@ const Promo = () => {
         method: 'POST',
         headers: myHeaders,
         body: formData
-      }).then((res) => (res.status == 201 ? window.location.reload() : alert('Something wrong')));
-      console.log(file);
+      }).then((res) => (res.status == 201 ? '' : alert('Something wrong')));
     };
     asyncReport();
   };
@@ -72,7 +72,7 @@ const Promo = () => {
       method: 'PUT',
       headers: myHeaders,
       body: JSON.stringify(arr)
-    }).then((res) => (res.status == 200 ? window.location.reload() : alert('Something wrong')));
+    }).then((res) => (res.status == 200 ? setChange(!change) : alert('Something wrong')));
   };
 
   return (
