@@ -28,7 +28,7 @@ const InspectAdminId = () => {
       setStatus(result1);
     };
     asyncFn();
-  }, []);
+  }, [status]);
 
   const handlepublic = () => {
     const asyncCansel = () => {
@@ -38,7 +38,7 @@ const InspectAdminId = () => {
         body: JSON.stringify({
           status: 'Explored'
         })
-      }).then((res) => (res.status === 200 ? window.location.reload() : alert('Something wrong')));
+      }).then((res) => (res.status === 200 ? setStatus(!status) : alert('Something wrong')));
     };
     asyncCansel();
     // navigate('/process-admin');
@@ -52,7 +52,7 @@ const InspectAdminId = () => {
         body: JSON.stringify({
           status: 'Archived'
         })
-      }).then((res) => (res.status === 200 ? window.location.reload() : alert('Something wrong')));
+      }).then((res) => (res.status === 200 ? setStatus(!status) : alert('Something wrong')));
     };
     asyncCansel();
     // navigate('/process-admin');

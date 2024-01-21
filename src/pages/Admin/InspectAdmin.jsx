@@ -16,6 +16,7 @@ import { getAccessToken } from '../../utils/accessToken';
 const InspectAdmin = () => {
   const [app, setApp] = useState([]);
   const [create, setCreate] = useState(false);
+  const [del, setDelete] = useState(false);
   // const [file, setFile] = useState([]);
   const [file, setFile] = useState(null);
 
@@ -34,7 +35,7 @@ const InspectAdmin = () => {
       setApp(result);
     };
     asyncFn();
-  }, []);
+  }, [create, del]);
 
   const handleCreate = () => {
     setCreate(!create);
@@ -84,7 +85,7 @@ const InspectAdmin = () => {
       fetch(`${REACT_APP_API}/inspection/${id}`, {
         method: 'DELETE',
         headers: myHeaders
-      }).then((res) => (res.status === 204 ? window.location.reload() : alert('Something wrong')));
+      }).then((res) => (res.status === 204 ? setDelete(!del) : alert('Something wrong')));
     };
     asyncCansel();
   };
