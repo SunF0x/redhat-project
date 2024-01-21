@@ -39,7 +39,7 @@ const ReportId = () => {
         </div>
 
         <div className="text2">Комментарий: {app.text}</div>
-        <div className="text2">Статус: {app.result}</div>
+        <div className="text2">Статус: {app.status}</div>
         <div className="button-left">
           <Button
             type="submit"

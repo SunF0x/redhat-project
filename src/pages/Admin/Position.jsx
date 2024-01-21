@@ -34,7 +34,7 @@ const Position = (element) => {
         headers: myHeaders //,
       }).then((res) => {
         if (res.status == 204) {
-          window.location.reload();
+          enqueueSnackbar('Позиция удалена', { variant: 'success' });
         } else {
           enqueueSnackbar('Не удалось удалить позицию', { variant: 'error' });
         }
@@ -65,9 +65,9 @@ const Position = (element) => {
       }).then((res) => {
         if (res.status == 200) {
           setUpdate(false);
-          window.location.reload();
+          enqueueSnackbar('Позиция обновлена', { variant: 'success' });
         } else {
-          alert('Something wrong');
+          enqueueSnackbar('Не удалось обновить позицию', { variant: 'error' });
         }
       });
     }
