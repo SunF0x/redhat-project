@@ -16,8 +16,8 @@ import { getAccessToken } from '../../utils/accessToken';
 const Report = () => {
   const [app, setApp] = useState([]);
   const [create, setCreate] = useState(false);
-  // const [file, setFile] = useState([]);
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState([]);
+  const [status, setStatus] = useState(1);
 
   if (!getAccessToken()) {
     return <Navigate to="/login" />;
@@ -34,7 +34,7 @@ const Report = () => {
       setApp(result);
     };
     asyncFn();
-  }, []);
+  }, [create]);
 
   const handleCreate = () => {
     setCreate(!create);
@@ -50,39 +50,29 @@ const Report = () => {
 
   const handleFile = (e) => {
     if (e.target.files) {
-      setFile(e.target.files[0]);
+      if (e.target.files.length > 1) {
+        setStatus(2);
+        setFile([e.target.files[0], e.target.files[1]]);
+      } else {
+        setFile(e.target.files[0]);
+      }
     }
   };
-
-  console.log(file);
-
-  let fileReader = new FileReader();
-
-  function getByteArray(file) {
-    return new Promise(function (resolve, reject) {
-      fileReader.readAsArrayBuffer(file);
-      fileReader.onload = function (ev) {
-        const array = new Uint8Array(ev.target.result);
-        const fileByteArray = [];
-        for (let i = 0; i < array.length; i++) {
-          fileByteArray.push(array[i]);
-        }
-        resolve(array); // successful
-      };
-      fileReader.onerror = reject; // call reject if error
-    });
-  }
 
   const addreport = (e) => {
     e.preventDefault();
     const asyncReport = () => {
       const formData = new FormData();
-      formData.append(`photo`, file);
+      // formData.append(`photo`, file);
       formData.append('data', document.getElementById('report').value);
       formData.append('verdict', document.getElementById('verdict').value);
-      // file.map((el, i) => {
-      //   i == 0 ? formData.append(`photo`, el) : formData.append(`photo${i}`, el);
-      // });
+      if (status === 2) {
+        file.map((el, i) => {
+          i == 0 ? formData.append(`photo`, el) : formData.append(`photo${i}`, el);
+        });
+      } else {
+        formData.append(`photo`, file);
+      }
 
       const myHeaders = new Headers();
       myHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
@@ -226,7 +216,7 @@ const Report = () => {
                     scope="row"
                     sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
                     <Link style={{ textDecoration: 'underline' }} to={`${row.reportId}`}>
-                      Отчет №{row.reportId} {console.log(row.reportId)}
+                      Отчет №{row.reportId}
                     </Link>
                   </TableCell>
                   <TableCell
