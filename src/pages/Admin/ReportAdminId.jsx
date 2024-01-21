@@ -8,6 +8,7 @@ import { getAccessToken } from '../../utils/accessToken';
 const ReportAdminId = () => {
   const { id } = useParams();
   const [app, setApp] = useState([]);
+  const [status, setStatus] = useState(false);
   const navigate = useNavigate();
   if (!getAccessToken()) {
     return <Navigate to="/login" />;
@@ -23,7 +24,7 @@ const ReportAdminId = () => {
       setApp(result);
     };
     asyncFn();
-  }, []);
+  }, [status]);
 
   const handlepublic = () => {
     const asyncCansel = () => {
@@ -33,7 +34,21 @@ const ReportAdminId = () => {
         body: JSON.stringify({
           status: 'Published'
         })
-      }).then((res) => (res.status === 200 ? window.location.reload() : alert('Something wrong')));
+      }).then((res) => (res.status === 200 ? setStatus(!status) : alert('Something wrong')));
+    };
+    asyncCansel();
+    // navigate('/process-admin');
+  };
+
+  const handledeclined = () => {
+    const asyncCansel = () => {
+      fetch(`${REACT_APP_API}/admin/review/${id}`, {
+        method: 'PUT',
+        headers: myHeaders,
+        body: JSON.stringify({
+          status: 'Declined'
+        })
+      }).then((res) => (res.status === 200 ? setStatus(!status) : alert('Something wrong')));
     };
     asyncCansel();
     // navigate('/process-admin');
@@ -57,7 +72,6 @@ const ReportAdminId = () => {
         <div className="text2">Заказ номер: {app.orderId}</div>
         <div className="text2">Статус: {app.reportStatus}</div>
         <Button
-          disabled={app.status === 'Cooking'}
           type="submit"
           onClick={handlepublic}
           variant="contained"
@@ -70,6 +84,21 @@ const ReportAdminId = () => {
             color: 'white'
           }}>
           Опубликовать
+        </Button>
+
+        <Button
+          type="submit"
+          onClick={handledeclined}
+          variant="contained"
+          style={{
+            width: '200px',
+            backgroundColor: `#3e131b`,
+            fontFamily: 'El Messiri',
+            fontSize: 16,
+            margin: '30px',
+            color: 'white'
+          }}>
+          Отклонить
         </Button>
 
         <div className="button-left">

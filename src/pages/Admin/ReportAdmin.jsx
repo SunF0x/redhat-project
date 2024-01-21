@@ -16,7 +16,7 @@ import { getAccessToken } from '../../utils/accessToken';
 const ReportAdmin = () => {
   const [app, setApp] = useState([]);
   const [create, setCreate] = useState(false);
-  // const [file, setFile] = useState([]);
+  const [del, setDelete] = useState(false);
   const [file, setFile] = useState(null);
 
   if (!getAccessToken()) {
@@ -34,7 +34,7 @@ const ReportAdmin = () => {
       setApp(result);
     };
     asyncFn();
-  }, []);
+  }, [create, del]);
 
   const handleCreate = () => {
     setCreate(!create);
@@ -84,7 +84,7 @@ const ReportAdmin = () => {
       fetch(`${REACT_APP_API}/admin/review/${id}`, {
         method: 'DELETE',
         headers: myHeaders
-      }).then((res) => (res.status === 201 ? window.location.reload() : alert('Something wrong')));
+      }).then((res) => (res.status === 201 ? setDelete(!del) : alert('Something wrong')));
     };
     asyncCansel();
   };
