@@ -19,7 +19,7 @@ const Menu = () => {
     parseJwt()?.role === 'Admin'
   ) {
     return <Navigate to="/process-order" replace={true} />;
-  } else if (parseJwt()?.role === 'Inspector' || parseJwt()?.role === 'SecretShopper') {
+  } else if (parseJwt()?.role === 'Inspector') {
     return <Navigate to="/report" replace={true} />;
   } else if (parseJwt()?.role === null) {
     return <Navigate to="/login" />;
