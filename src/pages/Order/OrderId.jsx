@@ -87,7 +87,7 @@ const Order = () => {
 
   return (
     <div className="fon">
-      <div className="pole">
+      <div className="pole1">
         <div className="title2">Мои заказы - Заказ</div>
         <div className="text2">
           Дата: {app?.created?.substring(0, 10)} {app?.created?.substring(11, 19)}
@@ -107,72 +107,75 @@ const Order = () => {
         <div className="text2">Комментарий: {app.comment}</div>
         <div className="text2">Статус: {app.status}</div>
         <div className="text3">Код получения заказа: {app.deliveryCode}</div>
-      </div>
-      {app.status === 'Created' && (
-        <Button
-          type="submit"
-          onClick={handledeleteorder}
-          variant="contained"
-          style={{
-            width: '200px',
-            backgroundColor: `#3e131b`,
-            fontFamily: 'El Messiri',
-            fontSize: 16,
-            margin: '30px'
-          }}>
-          Отменить заказ
-        </Button>
-      )}
-      {app.status === 'Done' && (
-        <form onSubmit={addreport} className="flex flex-row gap-4 ml-8 mt-4">
-          <input
-            className="h-10 rounded-md pl-2"
-            id="report"
-            type="report"
-            label="report"
-            placeholder="Оставьте отзыв"
-          />
-          <select
-            className="h-10 rounded-md pl-2"
-            id="mark"
-            type="mark"
-            label="mark"
-            placeholder="Оценка">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-          </select>
-          <input
-            className="h-10 rounded-md pl-2 mt-2"
-            id="file"
-            type="file"
-            label="file"
-            onChange={handleFile}
-            accept="image/*,image/jpeg"
-            placeholder="Добавьте изображение"></input>
+        {app.status === 'Created' && (
           <Button
             type="submit"
+            onClick={handledeleteorder}
             variant="contained"
             style={{
-              bottom: 0,
-              right: 0,
-              width: '150px',
-              backgroundColor: `#90182E`,
+              width: '200px',
+              backgroundColor: `#3e131b`,
               fontFamily: 'El Messiri',
-              fontSize: 16
+              fontSize: 16,
+              margin: '30px'
             }}>
-            Отправить
+            Отменить заказ
           </Button>
-        </form>
-      )}
+        )}
+        {app.status === 'Done' && (
+          <form onSubmit={addreport} className="flex flex-row gap-4 ml-8 mt-4">
+            <input
+              className="h-10 rounded-md pl-2"
+              id="report"
+              type="report"
+              label="report"
+              placeholder="Оставьте отзыв"
+            />
+            <select
+              className="h-10 rounded-md pl-2"
+              id="mark"
+              type="mark"
+              label="mark"
+              placeholder="Оценка">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+            <input
+              className="h-10 rounded-md pl-2 mt-2"
+              id="file"
+              type="file"
+              label="file"
+              onChange={handleFile}
+              accept="image/*,image/jpeg"
+              placeholder="Добавьте изображение"></input>
+            <Button
+              type="submit"
+              variant="contained"
+              style={{
+                bottom: 0,
+                right: 0,
+                width: '150px',
+                backgroundColor: `#90182E`,
+                fontFamily: 'El Messiri',
+                fontSize: 16
+              }}>
+              Отправить
+            </Button>
+          </form>
+        )}
+      </div>
       <div className="button-left">
         <Button
           type="submit"
           onClick={() => navigate('/my-order')}
           variant="contained"
           style={{
+            position: 'fixed',
+            bottom: '30px',
+            right: '50px',
             width: '150px',
             backgroundColor: `#90182E`,
             fontFamily: 'El Messiri',

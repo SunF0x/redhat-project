@@ -110,12 +110,16 @@ const Dishes = (element) => {
       <div className="flex flex-col pl-4 max-w-4xl">
         <div className="name" onClick={() => setUpdate(true)}>
           {/* <Link style={{ textDecoration: 'underline' }} to={`/dishes/${el.id}`}> */}
-          <Link>{el.name}</Link>
+          <Link style={{ textDecoration: 'underline' }}>{el.name}</Link>
           {/* </Link> */}
         </div>
         <div className="description">{el.description}</div>
       </div>
-      <button onClick={() => deleteDishes(el.id)}>🗑</button>
+      <button
+        style={{ width: '40px', position: 'absolute', right: '40px' }}
+        onClick={() => deleteDishes(el.id)}>
+        🗑
+      </button>
       {/* <button onClick={() => addDishes}>✛</button> */}
       <Button
         type="submit"

@@ -48,7 +48,7 @@ const User = () => {
 
   return (
     <div className="fon">
-      <div className="pole">
+      <div className="pole1">
         <div className="title2">Роль: {parseJwt()?.role}</div>
         <div className="text2"> Список доступных адресов: </div>
         {address?.map((el) => (

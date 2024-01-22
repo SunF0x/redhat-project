@@ -79,7 +79,9 @@ const Position = (element) => {
       <div className="flex flex-col pl-4 max-w-4xl">
         <div className="flex flex-row space-x-4">
           <div className="name">
-            <Link onClick={() => setUpdate(!update)}>{el.dish.name}</Link>
+            <Link style={{ textDecoration: 'underline' }} onClick={() => setUpdate(!update)}>
+              {el.dish.name}
+            </Link>
           </div>
           <div className="discount">{el.available ? 'Доступен' : 'Недоступен'}</div>
         </div>
@@ -91,7 +93,11 @@ const Position = (element) => {
           ''
         )}
       </div>
-      <button onClick={() => deleteDishes(el.id)}>🗑</button>
+      <button
+        style={{ width: '40px', position: 'absolute', right: '40px' }}
+        onClick={() => deleteDishes(el.id)}>
+        🗑
+      </button>
       <SnackbarProvider />
       <Dialog onClose={() => setUpdate(false)} open={update}>
         <DialogContent className="bg-[rgb(245,229,231,0.9)]">

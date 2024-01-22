@@ -41,7 +41,11 @@ const Item = (element) => {
         )}
       </div>
       <SnackbarProvider />
-      <button onClick={() => addElementtoBag(el.menuItemId)}>✛</button>
+      <button
+        style={{ width: '40px', position: 'absolute', right: '40px' }}
+        onClick={() => addElementtoBag(el.menuItemId)}>
+        ✛
+      </button>
     </div>
   );
 };
