@@ -73,7 +73,13 @@ const Order = () => {
         method: 'POST',
         headers: myHeaders,
         body: formData
-      }).then((res) => (res.status == 201 ? navigate('/my-order') : alert('Something wrong')));
+      }).then((res) =>
+        res.status == 201
+          ? navigate('/my-order')
+          : res.status == 409
+          ? alert('Вы уже писали отзыв к данному заказу')
+          : alert('Something wrong')
+      );
     };
     asyncReport();
     // navigate('/my-order');
