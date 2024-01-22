@@ -64,7 +64,7 @@ const Order = () => {
         );
         const result = await response?.json();
         //   console.log(result);
-        setRoute(result.routes);
+        setRoute(result?.routes);
       }
     };
     asyncFn();
@@ -292,7 +292,7 @@ const Order = () => {
           </Button>
         </div>
       )}
-      {parseJwt()?.role === 'Courier' && (
+      {/* {parseJwt()?.role === 'Courier' && (
         <Button
           disabled={app.status === 'Delivering'}
           type="submit"
@@ -308,7 +308,7 @@ const Order = () => {
           }}>
           Взять в доставку
         </Button>
-      )}
+      )} */}
       {parseJwt()?.role === 'Courier' && (
         <Button
           type="submit"
@@ -327,7 +327,9 @@ const Order = () => {
       )}
       {show && (
         <div>
-          <div className="text2">Текущий адрес: {route[count]?.street}</div>
+          <div className="text2">
+            Текущий адрес: {count < route?.length ? route[count]?.street : 'Вы достигли клиента!'}
+          </div>
           <div className="text2">Адрес клиента: {app.address}</div>
           <div className="text2">Инструкция: {route[count]?.route || app.address}</div>
           <Button
@@ -369,7 +371,7 @@ const Order = () => {
               Проверить
             </Button>
           </div>
-          <Button
+          {/* <Button
             type="submit"
             onClick={handleready}
             variant="contained"
@@ -381,7 +383,7 @@ const Order = () => {
               margin: '16px'
             }}>
             Заказ доставлен
-          </Button>
+          </Button> */}
         </div>
       )}
       {parseJwt()?.role === 'Admin' && (
