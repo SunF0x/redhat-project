@@ -92,8 +92,8 @@ const ReportAdmin = () => {
   return (
     <div className="fon">
       <div className="pole1">
-        <div className="title2">Мои отчеты</div>
-        <Button
+        <div className="title2">Мои отзывы</div>
+        {/* <Button
           type="submit"
           variant="contained"
           onClick={handleCreate}
@@ -108,7 +108,7 @@ const ReportAdmin = () => {
             fontSize: 16
           }}>
           Создать отчет
-        </Button>
+        </Button> */}
         <Dialog onClose={() => setCreate(false)} open={create}>
           <DialogContent className="bg-[rgb(245,229,231,0.9)]">
             <form

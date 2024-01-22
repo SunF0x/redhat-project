@@ -94,7 +94,7 @@ const InspectAdmin = () => {
     <div className="fon">
       <div className="pole1">
         <div className="title2">Мои отчеты</div>
-        <Button
+        {/* <Button
           type="submit"
           variant="contained"
           onClick={handleCreate}
@@ -109,7 +109,7 @@ const InspectAdmin = () => {
             fontSize: 16
           }}>
           Создать отчет
-        </Button>
+        </Button> */}
         <Dialog onClose={() => setCreate(false)} open={create}>
           <DialogContent className="bg-[rgb(245,229,231,0.9)]">
             <form
