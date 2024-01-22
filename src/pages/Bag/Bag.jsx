@@ -277,6 +277,7 @@ const Bag = () => {
             />
             <div className="flex place-content-end m-14">
               <Button
+                disabled={countsum() <= 0}
                 type="submit"
                 variant="contained"
                 style={{

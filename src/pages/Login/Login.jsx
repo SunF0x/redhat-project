@@ -122,7 +122,7 @@ const Login = () => {
             <input
               className="h-12 rounded-md pl-2"
               id="password2"
-              type="password2"
+              type="password"
               label="Пароль повторно"
               onChange={handleChange}
               value={values.password2}

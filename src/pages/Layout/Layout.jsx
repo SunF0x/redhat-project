@@ -51,7 +51,7 @@ const Layout = () => {
             }}>
             Меню
           </Button>
-          {(parseJwt().role === 'Client' || parseJwt()?.role === 'SecretShopper') && (
+          {(parseJwt()?.role === 'Client' || parseJwt()?.role === 'SecretShopper') && (
             <Button
               type="submit"
               variant="contained"

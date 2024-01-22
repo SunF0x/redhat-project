@@ -39,7 +39,7 @@ const ReportPub = () => {
   return (
     <div className="fon">
       <div className="pole1">
-        <div className="title2">Мои отчеты</div>
+        <div className="title2">Опубликованные отзывы</div>
         <Table sx={{ minWidth: 650, padding: 10 }} aria-label="simple table">
           <TableHead sx={{ fontFamily: 'El Messiri', fontSize: 18 }}>
             <TableRow>
