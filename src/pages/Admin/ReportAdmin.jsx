@@ -54,7 +54,7 @@ const ReportAdmin = () => {
     }
   };
 
-  console.log(file);
+  // console.log(file);
 
   const addreport = (e) => {
     e.preventDefault();
@@ -79,15 +79,15 @@ const ReportAdmin = () => {
     asyncReport();
   };
 
-  const handledelete = (id) => {
-    const asyncCansel = () => {
-      fetch(`${REACT_APP_API}/admin/review/${id}`, {
-        method: 'DELETE',
-        headers: myHeaders
-      }).then((res) => (res.status === 201 ? setDelete(!del) : alert('Something wrong')));
-    };
-    asyncCansel();
-  };
+  // const handledelete = (id) => {
+  //   const asyncCansel = () => {
+  //     fetch(`${REACT_APP_API}/admin/review/${id}`, {
+  //       method: 'DELETE',
+  //       headers: myHeaders
+  //     }).then((res) => (res.status === 204 ? setDelete(!del) : console.log('!')));
+  //   };
+  //   asyncCansel();
+  // };
 
   return (
     <div className="fon">
@@ -214,12 +214,12 @@ const ReportAdmin = () => {
                     sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
                     {row.created.substring(0, 10)} {row.created.substring(11, 19)}
                   </TableCell>
-                  <TableCell
+                  {/* <TableCell
                     className="goods"
                     align="center"
                     sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
                     <button onClick={() => handledelete(row.reviewId)}>-</button>
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
               ))}
           </TableBody>

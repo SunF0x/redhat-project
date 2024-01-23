@@ -72,11 +72,11 @@ const Users = () => {
         method: 'DELETE',
         headers: myHeaders //,
       }).then((res) => {
-        if (res.status == 200) {
+        if (res.status == 204) {
           setOpen(!open);
           enqueueSnackbar('Пользователь удален', { variant: 'success' });
         } else {
-          enqueueSnackbar('Не удалось удалить пользователя', { variant: 'error' });
+          console.log('!');
         }
       });
     };
@@ -118,9 +118,9 @@ const Users = () => {
         if (res.status == 201) {
           setCreate(false);
           setOpen(!open);
-          enqueueSnackbar('Данные пользователя обновлены', { variant: 'success' });
+          enqueueSnackbar('Пользователь создан', { variant: 'success' });
         } else {
-          enqueueSnackbar('Не удалось обновить данные пользователя', { variant: 'error' });
+          enqueueSnackbar('Не создать пользователя', { variant: 'error' });
         }
       });
     }

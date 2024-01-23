@@ -46,10 +46,9 @@ const Order = () => {
         body: JSON.stringify({
           method: 'cancel'
         })
-      });
+      }).then((res) => (res.status === 200 ? navigate('/my-order') : console.log('!')));
     };
     asyncCansel();
-    navigate('/my-order');
   };
 
   const handleFile = (e) => {

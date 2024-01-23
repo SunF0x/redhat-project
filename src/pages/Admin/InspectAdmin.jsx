@@ -55,7 +55,7 @@ const InspectAdmin = () => {
     }
   };
 
-  console.log(file);
+  // console.log(file);
 
   const addreport = (e) => {
     e.preventDefault();
@@ -75,7 +75,7 @@ const InspectAdmin = () => {
         headers: myHeaders,
         body: formData
       }).then((res) => (res.status == 201 ? setCreate(false) : alert('Something wrong')));
-      console.log(file);
+      // console.log(file);
     };
     asyncReport();
   };
@@ -85,7 +85,7 @@ const InspectAdmin = () => {
       fetch(`${REACT_APP_API}/inspection/${id}`, {
         method: 'DELETE',
         headers: myHeaders
-      }).then((res) => (res.status === 204 ? setDelete(!del) : alert('Something wrong')));
+      }).then((res) => (res.status === 204 ? setDelete(!del) : console.log('!')));
     };
     asyncCansel();
   };

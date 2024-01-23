@@ -22,10 +22,10 @@ const InspectAdminId = () => {
       const result = await response.json();
       // const arr = result.filter((el) => el.reportId.toString() == id);
       setApp(result);
-      const response1 = await fetch(`${REACT_APP_API}/inspection/statuses`, { headers: myHeaders }); //,{mode: 'no-cors'}
-      const result1 = await response1.json();
-      // const arr = result.filter((el) => el.reportId.toString() == id);
-      setStatus(result1);
+      // const response1 = await fetch(`${REACT_APP_API}/inspection/statuses`, { headers: myHeaders }); //,{mode: 'no-cors'}
+      // const result1 = await response1.json();
+      // // const arr = result.filter((el) => el.reportId.toString() == id);
+      // setStatus(result1);
     };
     asyncFn();
   }, [status]);
