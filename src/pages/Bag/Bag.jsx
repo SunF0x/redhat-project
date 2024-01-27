@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { SnackbarProvider, enqueueSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
+import { REACT_APP_API } from '../../config/config';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -38,7 +39,7 @@ const Bag = () => {
   function countsum() {
     let sum = 0;
     {
-      menu.map((row) => (sum += parseFloat(row.cost) * goods[row.menuItemGuid]));
+      menu.map((row) => (sum += parseFloat(row.cost) * goods[row.menuItemId]));
     }
     return sum;
   }
@@ -48,10 +49,10 @@ const Bag = () => {
   myHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
   useEffect(() => {
     const asyncFn = async () => {
-      const response = await fetch('http://127.0.0.1:7777/v1/menu', { headers: myHeaders }); //,{mode: 'no-cors'}
+      const response = await fetch(`${REACT_APP_API}/menu`, { headers: myHeaders }); //,{mode: 'no-cors'}
       const result = await response.json();
       let menu;
-      if (goods !== {}) menu = result.filter((el) => el.menuItemGuid in goods);
+      if (goods !== {}) menu = result.filter((el) => el.menuItemId in goods);
       setMenu(menu);
     };
     asyncFn();
@@ -59,7 +60,7 @@ const Bag = () => {
 
   useEffect(() => {
     const asyncFn2 = async () => {
-      const response2 = await fetch('http://localhost:7777/v1/client/address', {
+      const response2 = await fetch(`${REACT_APP_API}/client/address`, {
         headers: myHeaders
       }).then(function (a) {
         return a.json();
@@ -76,48 +77,38 @@ const Bag = () => {
   ) {
     setGoods(JSON.parse(localStorage.getItem('goods')));
   }
-  //   }, []);
 
-  //   if (address.length <= 0) {
-  //     const asyncAd = async () => {
-  //       const response = await fetch('http://localhost:7777/v1/client/address', {
-  //         headers: myHeaders
-  //       }).then(function (a) {
-  //         return a.json();
-  //       });
-  //       setAdress(response);
-  //     };
-  //     asyncAd();
-  //   }
   const { values, handleChange, handleSubmit, setFieldValue } = useFormik({
     initialValues: {
       payment: 'Cash',
       comment: '',
-      clientGUID: ''
+      clientId: ''
     },
     onSubmit: async (values) => {
       let order = {
-        clientGUID: values.clientGUID,
+        clientId: values.clientId,
         payment: values.payment,
         comment: values.comment,
         orderItems: []
       };
-      if (values.clientGUID === '') order.clientGUID = getvalue();
+      if (values.clientId === '') order.clientId = getvalue();
       Object.entries(goods).forEach(([key, value]) =>
         order.orderItems.push({
-          menuItemGUID: key,
+          menuItemId: key,
           count: value.toString(),
           preference: ''
         })
       );
       console.log(order);
-      await fetch('http://localhost:7777/v1/order', {
+      await fetch(`${REACT_APP_API}/order`, {
         method: 'POST',
         headers: myHeaders,
         body: JSON.stringify(order)
       }).then(function (a) {
         if (a.status === 201) {
           localStorage.removeItem('goods');
+          // enqueueSnackbar('Заказ создан!', 'success');
+          alert('Заказ создан!');
           navigate('/my-order');
         }
         return a.json(); // call the json method on the response to get JSON
@@ -133,13 +124,7 @@ const Bag = () => {
     var value = e.value;
     return value;
   }
-  //   const handleSaveAddress = async () => {
-  //     await fetch('http://localhost:7777/v1/client/address', {
-  //       method: 'POST',
-  //       headers: myHeaders,
-  //       body: values.address
-  //     });
-  //   };
+
   return (
     <div className="fon">
       <div className="pole">
@@ -177,7 +162,7 @@ const Bag = () => {
                     className="goods"
                     align="center"
                     sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                    {goods[row.menuItemGuid]}
+                    {goods[row.menuItemId]}
                   </TableCell>
                   <TableCell
                     className="goods"
@@ -190,7 +175,7 @@ const Bag = () => {
                     align="center"
                     sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
                     <SnackbarProvider />
-                    <button onClick={() => removeElementfromBag(row.menuItemGuid)}>-</button>
+                    <button onClick={() => removeElementfromBag(row.menuItemId)}>-</button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -258,12 +243,12 @@ const Bag = () => {
                 <div className="text">Укажите адрес доставки</div>
                 <select
                   id="select_field"
-                  value={values.clientGUID}
+                  value={values.clientId}
                   className="h-12 w-96 rounded-md pl-2"
-                  onChange={() => setFieldValue('clientGUID', getvalue())}>
+                  onChange={() => setFieldValue('clientId', getvalue())}>
                   {address.length !== 0 &&
                     address?.map((el) => (
-                      <option key={el.clientGuid} value={el.clientGuid}>
+                      <option key={el.clientId} value={el.clientId}>
                         {el.address}
                       </option>
                     ))}
@@ -292,6 +277,7 @@ const Bag = () => {
             />
             <div className="flex place-content-end m-14">
               <Button
+                disabled={countsum() <= 0}
                 type="submit"
                 variant="contained"
                 style={{

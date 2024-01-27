@@ -4,6 +4,7 @@
     height: 60px;
     left: 0px;
     top: 0px;
+    z-index: 50;
 
     background: rgb(62, 19, 27, 0.9);
     /* opacity: 0.9; */

@@ -1,7 +1,9 @@
-import './ProcessOrder.css';
+import './Report.css';
 import { Link, Navigate } from 'react-router-dom';
-import { getAccessToken, parseJwt } from '../../utils/accessToken';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Button } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
 import { REACT_APP_API } from '../../config/config';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,32 +11,35 @@ import TableCell from '@mui/material/TableCell';
 // import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { getAccessToken } from '../../utils/accessToken';
 
-const ProcessOrder = () => {
+const ReportPub = () => {
   const [app, setApp] = useState([]);
+  const [create, setCreate] = useState(false);
+  // const [file, setFile] = useState([]);
+  const [file, setFile] = useState(null);
+
   if (!getAccessToken()) {
     return <Navigate to="/login" />;
   }
-  if (parseJwt()?.role === 'Client') {
-    return <Navigate to="/menu" />;
-  }
+
+  const myHeaders = new Headers();
+  myHeaders.append('Content-Type', 'application/json');
+  myHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+
   useEffect(() => {
     const asyncFn = async () => {
-      const myHeaders = new Headers();
-      myHeaders.append('Content-Type', 'application/json');
-      myHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
-      const response = await fetch(`${REACT_APP_API}/order`, { headers: myHeaders }); //,{mode: 'no-cors'}
+      const response = await fetch(`${REACT_APP_API}/reports/all`, { headers: myHeaders }); //,{mode: 'no-cors'}
       const result = await response.json();
-      // console.log(result);
       setApp(result);
     };
     asyncFn();
   }, []);
+
   return (
     <div className="fon">
       <div className="pole1">
-        <div className="title2">Заказы</div>
-        <div className="Line"></div>
+        <div className="title2">Опубликованные отзывы</div>
         <Table sx={{ minWidth: 650, padding: 10 }} aria-label="simple table">
           <TableHead sx={{ fontFamily: 'El Messiri', fontSize: 18 }}>
             <TableRow>
@@ -46,33 +51,31 @@ const ProcessOrder = () => {
                 sx={{ fontFamily: 'El Messiri', fontSize: 18, fontWeight: 700 }}>
                 Дата
               </TableCell>
-              <TableCell
-                align="center"
-                sx={{ fontFamily: 'El Messiri', fontSize: 18, fontWeight: 700 }}>
-                Адрес
+              <TableCell sx={{ fontFamily: 'El Messiri', fontSize: 18, fontWeight: 700 }}>
+                Оценка
               </TableCell>
-              <TableCell
-                align="center"
-                sx={{ fontFamily: 'El Messiri', fontSize: 18, fontWeight: 700 }}>
-                Статус
+              <TableCell sx={{ fontFamily: 'El Messiri', fontSize: 18, fontWeight: 700 }}>
+                Отзыв
+              </TableCell>
+              <TableCell sx={{ fontFamily: 'El Messiri', fontSize: 18, fontWeight: 700 }}>
+                Изображение
               </TableCell>
             </TableRow>
           </TableHead>
-          {/* <div className="Line"></div> */}
           <TableBody>
             {app
               .sort((a, b) => (a.created > b.created ? 1 : -1))
-              .map((row, index) => (
+              .map((row) => (
                 <TableRow
-                  key={row.orderId}
+                  key={row.reportId}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell
                     className="goods"
                     component="th"
                     scope="row"
                     sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                    <Link style={{ textDecoration: 'underline' }} to={`${row.orderId}`}>
-                      Заказ №{index + 1}
+                    <Link style={{ textDecoration: 'underline' }}>
+                      Отчет №{row.reportId} {console.log(row.reportId)}
                     </Link>
                   </TableCell>
                   <TableCell
@@ -85,22 +88,27 @@ const ProcessOrder = () => {
                     className="goods"
                     align="center"
                     sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                    {row.address}
+                    {row.mark}
                   </TableCell>
                   <TableCell
                     className="goods"
                     align="center"
                     sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                    {row.status}
+                    {row.text}
+                  </TableCell>
+                  <TableCell
+                    className="goods"
+                    align="center"
+                    sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+                    <img src={`http://localhost:7777${row.dataUris[0]}`} />
                   </TableCell>
                 </TableRow>
               ))}
           </TableBody>
         </Table>
         <div className="Line"></div>
-        {/* <div className="h-96"></div> */}
       </div>
     </div>
   );
 };
-export default ProcessOrder;
+export default ReportPub;

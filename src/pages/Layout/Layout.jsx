@@ -2,11 +2,13 @@ import './Layout.css';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { deleteAccessToken, getAccessToken, parseJwt } from '../../utils/accessToken';
 import { Button } from '@mui/material';
+import { REACT_APP_API } from '../../config/config';
 import { useState } from 'react';
 
 const Layout = () => {
   const navigate = useNavigate();
   const [openmenu, setOpenmenu] = useState(false);
+  const [courierCode, setCouriercode] = useState(false);
   if (!getAccessToken()) {
     return <Navigate to="/login" />;
   }
@@ -15,6 +17,23 @@ const Layout = () => {
     deleteAccessToken();
     navigate('/login');
   };
+
+  const myHeaders = new Headers();
+  myHeaders.append('Content-Type', 'application/json');
+  myHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
+
+  function getCourierCode() {
+    const asyncCourier = async () => {
+      const response = await fetch(`${REACT_APP_API}/profile`, {
+        method: 'GET',
+        headers: myHeaders
+      });
+      const result = await response.json();
+      setCouriercode(result?.hatCode);
+    };
+    asyncCourier();
+    return courierCode;
+  }
 
   return (
     <>
@@ -32,7 +51,7 @@ const Layout = () => {
             }}>
             Меню
           </Button>
-          {parseJwt().role === 'Client' && (
+          {(parseJwt()?.role === 'Client' || parseJwt()?.role === 'SecretShopper') && (
             <Button
               type="submit"
               variant="contained"
@@ -48,6 +67,20 @@ const Layout = () => {
               </Link>
             </Button>
           )}
+          {parseJwt()?.role === 'Courier' && (
+            <Button
+              type="submit"
+              variant="text"
+              style={{
+                width: '250px',
+                color: 'white',
+                fontFamily: 'El Messiri',
+                fontSize: 16,
+                marginLeft: '650px'
+              }}>
+              Код шапочки: {getCourierCode()}
+            </Button>
+          )}
           <Button
             onClick={handleLogout}
             type="submit"
@@ -61,8 +94,8 @@ const Layout = () => {
             Выход
           </Button>
         </div>
-        {openmenu && parseJwt().role === 'Client' && (
-          <div className="ml-8 p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
+        {openmenu && (parseJwt().role === 'Client' || parseJwt()?.role === 'SecretShopper') && (
+          <div className="z-50 ml-8 p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
             <Link to="menu" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
               Меню
             </Link>
@@ -72,18 +105,63 @@ const Layout = () => {
             <Link to="my-order" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
               Мои заказы
             </Link>
+            <Link to="report-public" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Отзывы
+            </Link>
+          </div>
+        )}
+        {openmenu && parseJwt().role === 'Client' && (
+          <div className="z-50 ml-8 mt-[-7px] p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
+            <Link to="report-user" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Мои отзывы
+            </Link>
           </div>
         )}
         {openmenu &&
           (parseJwt()?.role === 'Cook' ||
             parseJwt()?.role === 'Operator' ||
-            parseJwt()?.role === 'Courier') && (
+            parseJwt()?.role === 'Courier' ||
+            parseJwt()?.role === 'Inspector') && (
             <div className="ml-8 p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
               <Link to="process-order" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
                 Заказы
               </Link>
             </div>
           )}
+        {openmenu && parseJwt()?.role === 'Admin' && (
+          <div className="ml-8 p-2 w-36 bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
+            <Link to="menus" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Меню
+            </Link>
+            <Link to="process-order" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Заказы
+            </Link>
+            <Link to="inspect-admin" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Отчеты
+            </Link>
+            <Link to="report-admin" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Отзывы
+            </Link>
+            <Link to="users" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Пользователи
+            </Link>
+            <Link
+              to="terms"
+              style={{ fontFamily: 'El Messiri', fontSize: 16, textAlign: 'center' }}>
+              Условия обслуживания
+            </Link>
+            <Link to="promo" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Промо
+            </Link>
+          </div>
+        )}
+        {openmenu && (parseJwt()?.role === 'SecretShopper' || parseJwt()?.role === 'Inspector') && (
+          <div className="ml-8 p-2 w-36 mt-[-7px] bg-[#3e131b] place-items-center text-white flex flex-col gap-2 rounded-md">
+            <Link to="report" style={{ fontFamily: 'El Messiri', fontSize: 16 }}>
+              Отчеты
+            </Link>
+          </div>
+        )}
       </div>
       <div className="fon">
         <div className="pole"></div>

@@ -1,9 +1,16 @@
 import './Login.css';
 import { Button, Checkbox, FormControlLabel } from '@mui/material';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import { getAccessToken, setAccessToken } from '../../utils/accessToken';
+import { REACT_APP_API } from '../../config/config';
 import { useFormik } from 'formik';
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min) + min); // Максимум не включается, минимум включается
+}
 
 const Login = () => {
   const navigate = useNavigate();
@@ -16,7 +23,8 @@ const Login = () => {
   const { values, handleChange, handleSubmit } = useFormik({
     initialValues: {
       login: '',
-      password: ''
+      password: '',
+      password2: ''
     },
     onSubmit: async (values) => {
       let auth = {
@@ -24,26 +32,36 @@ const Login = () => {
         password: values.password
       };
       if (check) {
-        await fetch('http://localhost:7777/v1/auth/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(auth)
-        })
-          .then(function (a) {
-            return a.text(); // call the json method on the response to get JSON
-          })
-          .then(function (res) {
-            if (res !== 'Problems retrieving user' && res !== "Can't create user") {
-              setAccessToken(res);
-              navigate('/');
-            } else {
-              alert('something wrong');
-            }
-          });
+        if (auth.password === values.password2) {
+          let code = getRandomInt(1000, 10000);
+          const result = prompt(`Код подтверждения ${code}. Введите код подтверждения:`);
+          if (Number(result) == code) {
+            await fetch(`${REACT_APP_API}/auth/register`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(auth)
+            })
+              .then(function (a) {
+                return a.text(); // call the json method on the response to get JSON
+              })
+              .then(function (res) {
+                if (res !== 'Problems retrieving user' && res !== "Can't create user") {
+                  setAccessToken(res);
+                  navigate('/');
+                } else {
+                  alert('something wrong');
+                }
+              });
+          } else {
+            alert('Введен неверный код подтверждения');
+          }
+        } else {
+          alert('Пароли не совпадают');
+        }
       } else {
-        await fetch('http://localhost:7777/v1/auth/login', {
+        await fetch(`${REACT_APP_API}/auth/login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -51,12 +69,22 @@ const Login = () => {
           body: JSON.stringify(auth)
         })
           .then(function (a) {
+            if (a.status === 404) {
+              alert('User was not found');
+            }
             return a.text();
           })
           .then(function (res) {
-            if (res !== 'User was not found' && res !== 'Problems retrieving user') {
+            if (
+              res !== null &&
+              res !== 'User was not found' &&
+              res !== 'Problems retrieving user' &&
+              res !== 'The specified password does not match the user'
+            ) {
               setAccessToken(res);
               navigate('/');
+            } else {
+              alert('User was not found');
             }
           });
       }
@@ -90,7 +118,32 @@ const Login = () => {
             value={values.password}
             placeholder="Введите пароль"
           />
+          {check && (
+            <input
+              className="h-12 rounded-md pl-2"
+              id="password2"
+              type="password"
+              label="Пароль повторно"
+              onChange={handleChange}
+              value={values.password2}
+              placeholder="Повторите пароль"
+            />
+          )}
+          <Link style={{ color: 'white', opacity: 0.7 }} onClick={() => setCheck(!check)}>
+            {!check ? 'Зарегистрироваться' : 'Войти'}
+          </Link>
           <div className="flex place-content-center">
+            <Button
+              type="submit"
+              variant="contained"
+              style={{
+                width: '150px',
+                backgroundColor: `#90182E`
+              }}>
+              Войти
+            </Button>
+          </div>
+          {/* <div className="flex place-content-center">
             <FormControlLabel
               value="Первый раз на сайте?"
               control={
@@ -105,18 +158,7 @@ const Login = () => {
               labelPlacement="end"
               sx={{ color: 'white' }}
             />
-          </div>
-          <div className="flex place-content-center">
-            <Button
-              type="submit"
-              variant="contained"
-              style={{
-                width: '150px',
-                backgroundColor: `#90182E`
-              }}>
-              Войти
-            </Button>
-          </div>
+          </div> */}
         </form>
       </div>
     </div>

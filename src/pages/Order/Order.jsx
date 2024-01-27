@@ -1,6 +1,7 @@
 import './Order.css';
 import { Link, Navigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { REACT_APP_API } from '../../config/config';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -19,7 +20,7 @@ const Order = () => {
       const myHeaders = new Headers();
       myHeaders.append('Content-Type', 'application/json');
       myHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('accessToken'));
-      const response = await fetch('http://127.0.0.1:7777/v1/order', { headers: myHeaders }); //,{mode: 'no-cors'}
+      const response = await fetch(`${REACT_APP_API}/order`, { headers: myHeaders }); //,{mode: 'no-cors'}
       const result = await response.json();
       setApp(result);
     };
@@ -57,14 +58,14 @@ const Order = () => {
               .sort((a, b) => (a.created > b.created ? 1 : -1))
               .map((row, index) => (
                 <TableRow
-                  key={row.orderGuid}
+                  key={row.orderId}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                   <TableCell
                     className="goods"
                     component="th"
                     scope="row"
                     sx={{ fontFamily: 'El Messiri', fontSize: 16 }}>
-                    <Link style={{ textDecoration: 'underline' }} to={row.orderGuid}>
+                    <Link style={{ textDecoration: 'underline' }} to={`${row.orderId}`}>
                       Заказ №{index + 1}
                     </Link>
                   </TableCell>
